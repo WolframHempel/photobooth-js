@@ -1,0 +1,12 @@
+*{
+	margin:0;
+	padding:0;
+	list-style-type: none;
+}
+
+#wrapper{
+	width: 470px;
+	height: 300px;
+	margin: 10px auto;
+	box-shadow: 0 0 3px rgba( 0, 0, 0, 0.5 );
+}
