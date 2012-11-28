@@ -1,6 +1,7 @@
 Photobooth = function( container )
 {
-	//include Slider.js
+	//@include Slider.js
+	//@include ResizeHandle.js
 	
 	var hueOffset = 0,
 		saturationOffset = 0,
@@ -34,7 +35,7 @@ Photobooth = function( container )
 
 	var ePhotobooth = cE( "div" );
 	ePhotobooth.className = "Photobooth";
-	ePhotobooth.innerHTML = '<canvas></canvas><div class="warning notSupported">Sorry,Photobooth.js is not supported by your browser</div><div style="display:none"class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
+	ePhotobooth.innerHTML = '<canvas></canvas><div class="warning notSupported">Sorry,Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
 
 	var eInput = cE( "canvas" );
 	var oInput = eInput.getContext( "2d" );
@@ -56,16 +57,20 @@ Photobooth = function( container )
 
 	this.resize = function( width, height )
 	{
+		if( width < 200 || height < 200)
+		{
+			throw "Error: Not enough space for Photobooth. Min height / width is 200 px";
+		}
 		_width = width;
 		_height = height;
-		ePhotobooth.style.width = container.offsetWidth + "px";
-		ePhotobooth.style.height = container.offsetHeight + "px";
-		eInput.width = container.offsetWidth;
-		eInput.height = container.offsetHeight;
-		eOutput.width = container.offsetWidth;
-		eOutput.height = container.offsetHeight;
-		eVideo.width = container.offsetWidth;
-		eVideo.height = container.offsetHeight;
+		ePhotobooth.style.width = width + "px";
+		ePhotobooth.style.height = height + "px";
+		eInput.width = width;
+		eInput.height = height;
+		eOutput.width = width;
+		eOutput.height = height;
+		eVideo.width = width;
+		eVideo.height = height;
 	};
 
 	this.addImageCallback = function( callback )
@@ -158,11 +163,11 @@ Photobooth = function( container )
 			else
 			{
 				var d = max - min;
-				s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+				s = l > 0.5 ? d / ( 2 - max - min ) : d / ( max + min );
 				
-				if( max === r ) h = ( (g - b) / d + (g < b ? 6 : 0) ) / 6;
-				if( max === g ) h = ( (b - r) / d + 2 ) / 6;
-				if( max === b ) h = ( (r - g) / d + 4 ) / 6;
+				if( max === r ) h = ( ( g - b ) / d + ( g < b ? 6 : 0 ) ) / 6;
+				if( max === g ) h = ( ( b - r ) / d + 2 ) / 6;
+				if( max === b ) h = ( ( r - g ) / d + 4 ) / 6;
 			}
 
 			h = fWrap( h + hueOffset );
@@ -177,9 +182,9 @@ Photobooth = function( container )
 			{
 				var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
 				var p = 2 * l - q;
-				r = fHue2rgb(p, q, h + 1/3);
-				g = fHue2rgb(p, q, h);
-				b = fHue2rgb(p, q, h - 1/3);
+				r = fHue2rgb( p, q, h + 1/3 );
+				g = fHue2rgb( p, q, h );
+				b = fHue2rgb( p, q, h - 1/3 );
 			}
 
 			pData[ i ] = r * 255;
@@ -191,7 +196,6 @@ Photobooth = function( container )
 
 		fGetAnimFrame( fNextFrame );
 	};
-
 
 	if( !fGetUserMedia ) c( "notSupported" )[ 0 ].style.display = "block";
 
