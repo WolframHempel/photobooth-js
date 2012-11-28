@@ -1,5 +1,14 @@
 Photobooth = function( container )
 {
+	var fGetUserMedia =
+	(
+		navigator.getUserMedia ||
+		navigator.webkitGetUserMedia ||
+		navigator.mozGetUserMedia ||
+		navigator.oGetUserMedia ||
+		navigator.msieGetUserMedia ||
+		false
+	);
 	/**
 	* Image callback. Will be called when
 	* the user clicks the trigger
@@ -68,18 +77,6 @@ Photobooth = function( container )
 		_width = container.offsetWidth,
 		_height = container.offsetHeight;
 
-
-
-	var fGetUserMedia =
-	(
-		navigator.getUserMedia ||
-		navigator.webkitGetUserMedia ||
-		navigator.mozGetUserMedia ||
-		navigator.oGetUserMedia ||
-		navigator.msieGetUserMedia ||
-		false
-	);
-
 	var fGetAnimFrame =
 	(
 		window.requestAnimationFrame ||
@@ -95,7 +92,7 @@ Photobooth = function( container )
 
 	var ePhotobooth = cE( "div" );
 	ePhotobooth.className = "Photobooth";
-	ePhotobooth.innerHTML = '<canvas></canvas><div class="warning notSupported">Sorry,Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
+	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry,Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
 
 	var eInput = cE( "canvas" );
 	var oInput = eInput.getContext( "2d" );
@@ -114,11 +111,61 @@ Photobooth = function( container )
 	new Slider( c( "brightness" ), function( value ){ brightnessOffset = value; });
 
 	var oResizeHandle = new ResizeHandle( ePhotobooth, _width, _height );
-	c( "crop" ).onclick = oResizeHandle.toggle;
-	
-	
 
+	var eCrop = c( "crop" );
+	eCrop.onclick = function()
+	{
+		oResizeHandle.toggle();
 
+		if( eCrop.className === "crop" )
+		{
+			eCrop.className = "crop selected";
+		}
+		else
+		{
+			eCrop.className = "crop";
+		}
+	};
+
+	var eBlind = c( "blind" );
+	c( "trigger" ).onclick = function()
+	{
+		/**
+		* Flash
+		*/
+		eBlind.className = "blind";
+		eBlind.style.opacity = 1;
+		setTimeout(function(){ eBlind.className = "blind anim"; eBlind.style.opacity = 0; }, 50);
+
+		
+		var mData = oResizeHandle.getData();
+		var eTempCanvas = cE( "canvas" );
+
+		eTempCanvas.width = mData.width;
+		eTempCanvas.height = mData.height;
+
+		if( bVideoOnly )
+		{
+			eTempCanvas.getContext( "2d" ).drawImage(
+				eVideo,
+				mData.x - ( ( _width - eVideo.videoWidth ) / 2 ),
+				mData.y - ( ( _height - eVideo.videoHeight ) / 2 ),
+				mData.width,
+				mData.height,
+				0,
+				0,
+				mData.width,
+				mData.height);
+		}
+		else
+		{
+			var oImageData = oOutput.getImageData( mData.x, mData.y, mData.width, mData.height );
+			eTempCanvas.getContext( "2d" ).putImageData( oImageData, 0, 0 );
+		}
+
+		scope.onImage( eTempCanvas.toDataURL() );
+	};
+	
 
 	var fOnStream = function( oStream )
 	{

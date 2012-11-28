@@ -6,6 +6,16 @@ var ResizeHandle = function( eContainer, maxWidth, maxHeight )
 		maxHeight = height;
 	};
 
+	this.getData = function()
+	{
+		return {
+			x: left,
+			y: top,
+			width: width,
+			height: height
+		};
+	};
+	
 	this.toggle = function()
 	{
 		if( isVisible === false )
