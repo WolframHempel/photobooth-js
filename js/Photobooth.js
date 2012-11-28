@@ -1,15 +1,74 @@
 Photobooth = function( container )
 {
+	/**
+	* Image callback. Will be called when
+	* the user clicks the trigger
+	*
+	* Receives the image as a dataURL string
+	*/
+	this.onImage = function(){};
+
+	/**
+	* Drawing every frame of a video onto
+	* a canvas and performing some pixel
+	* manipulation ( like Photobooth does )
+	* works well in Chrome and Opera, but
+	* crashes Firefox within seconds. Therefore the
+	* Hue / saturation / Brightness sliders are turned
+	* of in FF and the video tag is displayed directly.
+	*
+	* To reeanble the Sliders set this property to true
+	*/
+	this.forceHSB = false;
+
+	/**
+	* True if the browser supports Webcam streams,
+	* false if not
+	*/
+	this.isSupported = !! fGetUserMedia;
+
+	/**
+	* Resizes the Photobooth to the desired size.
+	* Minimum for both width and height is 200px
+	*/
+	this.resize = function( width, height )
+	{
+		if( width < 200 || height < 200)
+		{
+			throw "Error: Not enough space for Photobooth. Min height / width is 200 px";
+		}
+
+		_width = width;
+		_height = height;
+		oResizeHandle.setMax( _width, _height );
+		ePhotobooth.style.width = width + "px";
+		ePhotobooth.style.height = height + "px";
+		eInput.width = width;
+		eInput.height = height;
+		eOutput.width = width;
+		eOutput.height = height;
+		eVideo.width = width;
+		eVideo.height = height;
+	};
+
+	/****************************
+	* Private Methods
+	****************************/
+
+	//@include Tools.js
 	//@include Drag.js
 	//@include Slider.js
 	//@include ResizeHandle.js
-	
+
 	var hueOffset = 0,
 		saturationOffset = 0,
 		brightnessOffset = 0,
-		pImageCallbacks = [],
+		bVideoOnly = false,
+		scope = this,
 		_width = container.offsetWidth,
 		_height = container.offsetHeight;
+
+
 
 	var fGetUserMedia =
 	(
@@ -57,32 +116,9 @@ Photobooth = function( container )
 	var oResizeHandle = new ResizeHandle( ePhotobooth, _width, _height );
 	c( "crop" ).onclick = oResizeHandle.toggle;
 	
-	this.isSupported = !! fGetUserMedia;
+	
 
-	this.resize = function( width, height )
-	{
-		if( width < 200 || height < 200)
-		{
-			throw "Error: Not enough space for Photobooth. Min height / width is 200 px";
-		}
 
-		_width = width;
-		_height = height;
-		oResizeHandle.setMax( _width, _height );
-		ePhotobooth.style.width = width + "px";
-		ePhotobooth.style.height = height + "px";
-		eInput.width = width;
-		eInput.height = height;
-		eOutput.width = width;
-		eOutput.height = height;
-		eVideo.width = width;
-		eVideo.height = height;
-	};
-
-	this.addImageCallback = function( callback )
-	{
-		pImageCallbacks.push( callback );
-	};
 
 	var fOnStream = function( oStream )
 	{
@@ -99,12 +135,23 @@ Photobooth = function( container )
 			* Firefox
 			*/
 			eVideo.mozSrcObject  =   oStream ;
-			eVideo.addEventListener( "canplay", function(){ fGetAnimFrame( fNextFrame ); }, false );
+
+			if( scope.forceHSB === false )
+			{
+				bVideoOnly = true;
+				ePhotobooth.appendChild( eVideo );
+				ePhotobooth.getElementsByTagName( "ul" )[ 0 ].className = "noHSB";
+			}
+			else
+			{
+				eVideo.addEventListener( "canplay", function(){ fGetAnimFrame( fNextFrame ); }, false );
+			}
+
 			eVideo.play();
 		}
 	};
 
-	var fOnStreamError = function()
+	var fOnStreamError = function( e )
 	{
 		eNoWebcamWarning.style.display = "block";
 	};
