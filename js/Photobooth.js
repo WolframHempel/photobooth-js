@@ -1,5 +1,6 @@
 Photobooth = function( container )
 {
+	//@include Drag.js
 	//@include Slider.js
 	//@include ResizeHandle.js
 	
@@ -52,6 +53,9 @@ Photobooth = function( container )
 	new Slider( c( "hue" ), function( value ){ hueOffset = value; });
 	new Slider( c( "saturation" ), function( value ){ saturationOffset = value; });
 	new Slider( c( "brightness" ), function( value ){ brightnessOffset = value; });
+
+	var oResizeHandle = new ResizeHandle( ePhotobooth, _width, _height );
+	c( "crop" ).onclick = oResizeHandle.toggle;
 	
 	this.isSupported = !! fGetUserMedia;
 
@@ -61,8 +65,10 @@ Photobooth = function( container )
 		{
 			throw "Error: Not enough space for Photobooth. Min height / width is 200 px";
 		}
+
 		_width = width;
 		_height = height;
+		oResizeHandle.setMax( _width, _height );
 		ePhotobooth.style.width = width + "px";
 		ePhotobooth.style.height = height + "px";
 		eInput.width = width;

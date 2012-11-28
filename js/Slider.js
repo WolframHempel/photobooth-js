@@ -1,23 +1,22 @@
-var Slider = function( container, fOnChange )
+var Slider = function( eContainer, fOnChange )
 {
-	container.innerHTML = '<div class="submenu"><div class="tip"></div><div class="slider"><div class="track"></div><div class="handle" style="left:50px"><div></div></div></div></div>';
-	var startX = 0;
-	var pos = 50;
-	var left = 50;
-	var handle = container.getElementsByClassName( "handle" )[0];
-	var background = container.getElementsByClassName( "slider" )[0];
+	eContainer.innerHTML = '<div class="submenu"><div class="tip"></div><div class="slider"><div class="track"></div><div class="handle" style="left:50px"><div></div></div></div></div>';
 
-	var fOnMouseDown = function( e )
+	var pos = 50,
+		left = 50,
+		eHandle = eContainer.getElementsByClassName( "handle" )[0],
+		background = eContainer.getElementsByClassName( "slider" )[0];
+
+	var oHandleDrag = new Drag( eHandle );
+
+	oHandleDrag.onMove = function( x )
 	{
-		e.preventDefault();
-		startX = e.clientX;
-		document.addEventListener( "mousemove", fOnMouseMove, false );
-		document.addEventListener( "mouseup", fOnMouseUp, false );
+		fApplyX( pos + x );
 	};
 
-	var fOnMouseMove = function( e )
+	oHandleDrag.onStop = function( x )
 	{
-		fApplyX( pos + ( e.clientX - startX ) );
+		pos = left;
 	};
 
 	var fApplyX = function( x )
@@ -25,18 +24,10 @@ var Slider = function( container, fOnChange )
 		if( x > 0 && x < 100 )
 		{
 			left = x;
-			handle.style.left = x + "px";
+			eHandle.style.left = x + "px";
 			fOnChange( ( x - 50 ) / 100 );
 		}
 	};
-
-	var fOnMouseUp = function( e )
-	{
-		pos = left;
-		document.removeEventListener( "mousemove", fOnMouseMove );
-		document.removeEventListener( "mouseup", fOnMouseUp );
-	};
-
 
 	var fOnBackgroundClick = function( e )
 	{
@@ -45,6 +36,5 @@ var Slider = function( container, fOnChange )
 	};
 
 	background.addEventListener( "click", fOnBackgroundClick, false );
-	handle.addEventListener( "mousedown", fOnMouseDown, false );
-	handle.addEventListener( "click", function(e){e.stopPropagation(); e.cancelBubble=true;}, false );
+	eHandle.addEventListener( "click", fCancelBubble, false );
 };

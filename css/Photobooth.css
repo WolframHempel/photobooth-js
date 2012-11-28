@@ -2,6 +2,11 @@
 .photobooth{
 	position: relative;
 	font: 11px arial,sans-serif;
+	overflow: hidden;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
 }
 .photobooth img, /** temp **/
 .photobooth canvas{
@@ -36,7 +41,7 @@
 	top: 0;
 	background: rgba( 0, 0, 0, 0.6 );
 	height: 190px;
-	z-index: 1;
+	z-index: 2;
 	border-bottom-left-radius: 5px;
 }
 
@@ -88,9 +93,11 @@
 	-msie-transition: opacity 500ms ease;
 	transition: opacity 500ms ease;
 }
+
 .photobooth li:hover .submenu{
 	opacity: 1;
 }
+
 .photobooth .submenu .tip{
 	width: 4px;
 	height: 8px;
@@ -98,7 +105,6 @@
 	right: -4px;
 	top: 50%;
 	margin-top: -2px;
-	
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAYAAADeM14FAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADVJREFUeNpiYGBgmAnEDP///wdjJgYImMnIyAhmwATggowwLTCArAKrQDqyQDrcMGQlAAEGAAGOCdflbyWyAAAAAElFTkSuQmCC);
 }
 
@@ -107,6 +113,7 @@
 	height: 20px;
 	position: relative;
 }
+
 .photobooth .submenu .slider .track{
 	height: 2px;
 	width: 100px;
@@ -123,6 +130,7 @@
 	background:#fff;
 	z-index: 2;
 }
+
 .photobooth .submenu .slider .handle div{
 	position: absolute;
 	z-index: 3;
@@ -131,4 +139,62 @@
 	height: 20px;
 	cursor: w-resize;
 	left: -9px;
+}
+
+/***************
+* Resize Handle
+***************/
+.resizehandle{
+	position: absolute;
+	z-index: 1;
+	width: 100px;
+	height: 100px;
+	left: 30px;
+	top: 30px;
+	cursor: move;
+	outline: 1500px solid rgba( 0,0,0,0.35 );
+	box-shadow: 2px 2px 10px rgba(0,0,0,0.5), 0 0 3px #000;
+	opacity: 0;
+	transition: opacity 500ms ease;
+	-moz-transition: opacity 500ms ease;
+	-o-transition: opacity 500ms ease;
+	-webkit-transition: opacity 500ms ease;
+}
+/**
+* Opera doesn't deal with the outline
+* correctly
+*/
+noindex:-o-prefocus,.resizehandle{
+	outline: none !important;
+}
+/**
+* Firefox messes the display of
+* box shadow on top of a rgba outline up
+* so let's turn it of
+*/
+@-moz-document url-prefix(){
+	.resizehandle{
+		box-shadow: none !important; 
+	}
+}
+.resizehandle .handle{
+	width: 100%;
+	height: 100%;
+	border: 2px dashed #0da4d3;
+	margin: -2px 0 0 -2px;
+	z-index: 3;
+	position: relative;
+}
+
+.resizehandle .handle div{
+	width: 18px;
+	height: 18px;
+	position: absolute;
+	right: -2px;
+	bottom: -2px;
+	z-index: 4;
+	cursor: se-resize;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHdJREFUeNpi/P//PwO5gIlcjXxLr/xnIlujsg7pNsM0AgEjE7kaSfIzusZ/d4n0M1aNxPgZWeMHC4RGIJuREV8847IRpBGvnwlpxBnPRGkEyYOcjYx5l1z+z3/8Pwij8NHlQWwUPxNrI4afSdUI9zNZGoF8gAADAOGvmx/e+CgVAAAAAElFTkSuQmCC);
+	background-position: top left;
+	background-repeat: no-repeat;
 }
