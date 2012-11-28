@@ -64,10 +64,10 @@ Photobooth = function( container )
 	* Private Methods
 	****************************/
 
-	//@include Tools.js
-	//@include Drag.js
-	//@include Slider.js
-	//@include ResizeHandle.js
+	//include Tools.js
+	//include Drag.js
+	//include Slider.js
+	//include ResizeHandle.js
 
 	var hueOffset = 0,
 		saturationOffset = 0,
