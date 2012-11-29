@@ -136,6 +136,7 @@ Photobooth = function( container )
 	};
 
 	var eBlind = c( "blind" );
+
 	c( "trigger" ).onclick = function()
 	{
 		/**
@@ -145,8 +146,21 @@ Photobooth = function( container )
 		eBlind.style.opacity = 1;
 		setTimeout(function(){ eBlind.className = "blind anim"; eBlind.style.opacity = 0; }, 50);
 
-		
-		var mData = oResizeHandle.getData();
+		var mData;
+		if( oResizeHandle.isActive() )
+		{
+			mData = oResizeHandle.getData();
+		}
+		else
+		{
+			mData = {
+				x:0,
+				y:0,
+				width: _width,
+				height: _height
+			};
+		}
+
 		var eTempCanvas = cE( "canvas" );
 
 		eTempCanvas.width = mData.width;

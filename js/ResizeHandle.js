@@ -16,6 +16,10 @@ var ResizeHandle = function( eContainer, maxWidth, maxHeight )
 		};
 	};
 	
+	this.isActive = function()
+	{
+		return isVisible;
+	};
 	this.toggle = function()
 	{
 		if( isVisible === false )
