@@ -2,19 +2,63 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<script type="text/javascript" src="js/Tools.js"></script>
-		<script type="text/javascript" src="js/Drag.js"></script>
-		<script type="text/javascript" src="js/Slider.js"></script>
-		<script type="text/javascript" src="js/ResizeHandle.js"></script>
-		<script type="text/javascript" src="js/Photobooth.js"></script>
-		<script type="text/javascript" src="js/script.js"></script>
-		<link type="text/css" rel="stylesheet" media="screen" href="css/screen.css" />
-		<link type="text/css" rel="stylesheet" media="screen" href="css/Photobooth.css" />
+		<script type="text/javascript" src="photobooth_min.js"></script>
+		<script type="text/javascript" src="page_script/jquery.js"></script>
+
+		<script type="text/javascript" src="page_script/script.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+		<link type="text/css" rel="stylesheet" media="screen" href="css/page.css" />
+		<title>Photobooth.js</title>
 	</head>
 	<body>
+		<ul id="nav">
+			<li><a target="Demo" title="Demo">Demo</a></li>
+			<li><a target="Usage" title="Usage">Usage</a></li>
+			<li><a target="Demo" title="Demo">Demo</a></li>
+			<li><a target="Demo" title="Demo">Demo</a></li>
+			<li><a target="Demo" title="Demo">Demo</a></li>
+			<li><a target="Demo" title="Demo">Demo</a></li>
+			<li><a target="Demo" title="Demo">Demo</a></li>
+		</ul>
 		<div id="wrapper">
+			<h1><a href="Demo">Photobooth.js</a></h1>
+			<div id="example"></div>
+			<div id="gallery"></div>
+			<h2><a href="Usage">Usage</a></h2>
+			<div class="tab_container">
+				<ul class="tabs">
+					<li calls="standalone" class="selected">Usage standalone</li>
+					<li calls="jquery">Usage with jQuery</li>
+				<ul>
+				<div class="tab_content standalone selected">
+<code>
+container = document.getElementById( "example" );
+gallery = document.getElementById( "gallery" );
 
+myPhotobooth = new Photobooth( container );
+
+myPhotobooth.onImage = function( dataUrl ){
+	var myImage = document.createElement( "img" );
+	myImage.src = dataUrl;
+	gallery.appendChild( myImage );
+}
+</code>
+				</div>
+				<div class="tab_content jquery">
+<code>
+gallery = document.getElementById( "gallery" );
+
+myPhotobooth = new Photobooth( $( "#example" ) );
+
+myPhotobooth.onImage = function( dataUrl ){
+	$( '#gallery' ).append( '&lt;img src="' + dataUrl + '" /&gt;' )
+}
+</code>
+				</div>
+			</div>
+			
 		</div>
+		<script type="text/javascript" src="page_script/hijs.js"></script>
 	</body>
 </html>
 

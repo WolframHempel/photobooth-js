@@ -1,0 +1,96 @@
+*{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font: 11px/16px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	color: #444;
+}
+
+h1,h2,h3, h2 a, h3 a{
+	font-family: 'Abel', sans-serif;
+	color: #000;
+	text-decoration: none;
+}
+
+#wrapper{
+	width: 470px;
+	margin: 10px auto;
+	position: relative;
+}
+
+h1{
+	width: 470px;
+	height: 140px;
+	text-indent: -9999;
+	background: url( ../img/photoboothjs.png ) no-repeat;
+}
+
+h2, h2 a{
+	margin: 10px 0 5px;
+	font-size: 20px;
+}
+
+#example{
+	height: 300px;
+}
+
+#nav{
+	position: fixed;
+	left: 50%;
+	margin-left: -390px;
+	width: 150px;
+}
+
+/***************
+* Tabs
+**************/
+.tab_container .tabs{
+	height: 24px;
+	display: block;
+	margin-top: 5px;
+	border-bottom: 1px solid #ccc;
+}
+
+.tab_container .tabs li{
+	padding: 5px;
+	height: 12px;
+	float: left;
+	background: #fff;
+	margin-right: 4px;
+	border: 1px solid #ccc;
+	border-radius: 4px 4px 0 0;
+	cursor: pointer;
+	position: relative;
+	top: 1px;
+	background: #f6f6f6;
+	z-index: 1;
+}
+.tab_container .tabs li:hover{
+	color: #000;
+}
+.tab_container .tabs li.selected{
+	border-bottom-color: #fff;
+	background: #fff;
+	color: #000;
+}
+
+.tab_container .tabs .tab_content{
+	clear:both;
+	display: none;
+}
+
+.tab_container .tabs .tab_content.selected{
+	display: block;
+}
+code{
+	display: block;
+}
+code, code *{
+	white-space: pre;
+	font-family: monospace;
+}
+code .keyword              { font-weight: bold }
+code .string, code .regexp { color: green }
+code .class, code .special { color: blue }
+code .number               { color: pink }
+code .comment              { color: grey }

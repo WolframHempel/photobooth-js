@@ -1,5 +1,13 @@
 Photobooth = function( container )
 {
+	/**
+	* Make it jQuery friendlier
+	*/
+	if( container.length )
+	{
+		container = container[ 0 ];
+	}
+
 	var fGetUserMedia =
 	(
 		navigator.getUserMedia ||
