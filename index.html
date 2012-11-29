@@ -46,13 +46,9 @@ myPhotobooth.onImage = function( dataUrl ){
 				</div>
 				<div class="tab_content jquery">
 <code>
-gallery = document.getElementById( "gallery" );
-
-myPhotobooth = new Photobooth( $( "#example" ) );
-
-myPhotobooth.onImage = function( dataUrl ){
-	$( '#gallery' ).append( '&lt;img src="' + dataUrl + '" /&gt;' )
-}
+$( '#example' ).photobooth().on( "image", function( event, dataUrl ){
+	$( "gallery" ).append( '&lt;img src="' + dataUrl + '" &gt;>');
+});
 </code>
 				</div>
 			</div>

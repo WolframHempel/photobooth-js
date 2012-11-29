@@ -13,23 +13,32 @@ for( var i = 0; i < pImports.length; i++ )
 	sJs = sJs.replace( pImports[ i ], sInclude );
 }
 
+var fMinifyJs = function( sJavasScript )
+{
+	var ast = jsp.parse( sJavasScript ); // parse code and get the initial AST
+	ast = pro.ast_mangle(ast); // get a new AST with mangled names
+	ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
+	return pro.gen_code(ast);
+};
 /**
 * Compress JavaScript
 * No idea what an ast is...works fine though :-)
 */
 console.log( "Minifying JavaScript");
-var ast = jsp.parse( sJs ); // parse code and get the initial AST
-ast = pro.ast_mangle(ast); // get a new AST with mangled names
-ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
-sJs = pro.gen_code(ast);
-
+sJs = fMinifyJs( sJs );
 /**
 * Css
 */
 console.log( "Minifying css" );
 sCss = cleanCSS.process( fs.readFileSync( "../css/Photobooth.css", "utf-8" ) );
 
-var now = new Date();
+/**
+* jQuery plugin code
+*/
+console.log( "Adding jQuery integration");
+sjQuery = fs.readFileSync( "../js/jqueryIntegration.js", "utf-8" );
+sjQuery = fMinifyJs( sjQuery );
+
 
 var sOutput = "";
 sOutput += "/**\n";
@@ -45,6 +54,10 @@ sOutput += "/**\n";
 sOutput += "* JS\n";
 sOutput += "*/\n";
 sOutput += sJs;
+sOutput += "\n/**\n";
+sOutput += "* jQuery integration. (It's safe to delete this line if you're not using jQuery)\n";
+sOutput += "*/\n";
+sOutput += sjQuery;
 
 
 fs.writeFileSync( "../photobooth_min.js", sOutput, "utf-8" );
