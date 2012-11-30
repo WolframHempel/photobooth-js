@@ -1,5 +1,7 @@
 $(function(){
-	var oPhotobooth = new Photobooth( $( '#example' ) );
+	$( '#example' ).photobooth().on( "image", function( event, dataUrl ){
+		$( "gallery" ).append( '<img src="' + dataUrl + '" >');
+	});
 
 	/**
 	* Tab boxes

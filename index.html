@@ -2,8 +2,9 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<script type="text/javascript" src="photobooth_min.js"></script>
 		<script type="text/javascript" src="page_script/jquery.js"></script>
+		<script type="text/javascript" src="photobooth_min.js"></script>
+		
 
 		<script type="text/javascript" src="page_script/script.js"></script>
 		<link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
@@ -12,26 +13,29 @@
 	</head>
 	<body>
 		<ul id="nav">
-			<li><a target="Demo" title="Demo">Demo</a></li>
-			<li><a target="Usage" title="Usage">Usage</a></li>
-			<li><a target="Demo" title="Demo">Demo</a></li>
-			<li><a target="Demo" title="Demo">Demo</a></li>
-			<li><a target="Demo" title="Demo">Demo</a></li>
-			<li><a target="Demo" title="Demo">Demo</a></li>
-			<li><a target="Demo" title="Demo">Demo</a></li>
+			<li><a href="#Demo" title="Demo">Demo</a></li>
+			<li><a href="#Usage" title="Usage">Usage</a></li>
+			<li><a href="#Documentation" title="Documentation">Documentation</a></li>
 		</ul>
 		<div id="wrapper">
-			<h1><a href="Demo">Photobooth.js</a></h1>
+			<h1><a name="Demo">Photobooth.js</a></h1>
 			<div id="example"></div>
 			<div id="gallery"></div>
-			<h2><a href="Usage">Usage</a></h2>
+			<h2><a name="Usage">Usage</a></h2>
 			<div class="tab_container">
 				<ul class="tabs">
-					<li calls="standalone" class="selected">Usage standalone</li>
-					<li calls="jquery">Usage with jQuery</li>
-				<ul>
-				<div class="tab_content standalone selected">
-<code>
+					<li calls="jquery" class="selected">Usage with jQuery</li>
+					<li calls="standalone" >Usage standalone</li>
+				</ul>
+				<div class="tab_content jquery selected">
+					<code>
+$( '#example' ).photobooth().on( "image", function( event, dataUrl ){
+	$( "#gallery" ).append( '&lt;img src="' + dataUrl + '" &gt;');
+});
+					</code>
+				</div>
+				<div class="tab_content standalone">
+					<code>
 container = document.getElementById( "example" );
 gallery = document.getElementById( "gallery" );
 
@@ -41,18 +45,50 @@ myPhotobooth.onImage = function( dataUrl ){
 	var myImage = document.createElement( "img" );
 	myImage.src = dataUrl;
 	gallery.appendChild( myImage );
-}
-</code>
-				</div>
-				<div class="tab_content jquery">
-<code>
-$( '#example' ).photobooth().on( "image", function( event, dataUrl ){
-	$( "gallery" ).append( '&lt;img src="' + dataUrl + '" &gt;>');
-});
-</code>
+};
+					</code>
 				</div>
 			</div>
-			
+			<h2><a href="Documentation">Documentation</a></h2>
+			<ul class="documentation">
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label>resize( with, height );</label>
+					<p>
+						Resizes the photobooth to the specified width and height ( in Pixel );
+						<div class="info">Minimum width and height are 200px</div>
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+$( '#example' ).data( "photobooth" ).resize( 400, 300 );
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+myPhotobooth.resize( 400, 300 );
+							</code>
+						</div>
+					</div>
+				</li>
+			</ul>
+				<!--
+				<dd>
+					
+					
+					
+				</dd>
+				<dt>onImage</dt>
+				<dd></dd>
+				<dt>forceHSB</dt>
+				<dd></dd>
+				<dt>isSupported</dt>
+				<dd></dd>
+			</dl>-->
 		</div>
 		<script type="text/javascript" src="page_script/hijs.js"></script>
 	</body>

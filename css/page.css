@@ -26,8 +26,13 @@ h1{
 }
 
 h2, h2 a{
-	margin: 10px 0 5px;
+	margin: 20px 0 5px;
 	font-size: 20px;
+}
+
+h3, h3 a{
+	margin: 5px 0 2px;
+	font-size: 16px;
 }
 
 #example{
@@ -40,10 +45,23 @@ h2, h2 a{
 	margin-left: -390px;
 	width: 150px;
 }
+dl dt{
+	display: block;
+	padding: 4px;
+}
+dl dt,dl dt *{
+	font-weight: bold;
 
+	font-size: 14px;
+	
+
+}
 /***************
 * Tabs
 **************/
+.tab_container{
+	overflow: hidden;
+}
 .tab_container .tabs{
 	height: 24px;
 	display: block;
@@ -62,26 +80,33 @@ h2, h2 a{
 	cursor: pointer;
 	position: relative;
 	top: 1px;
-	background: #f6f6f6;
+	background: #fff;
 	z-index: 1;
 }
 .tab_container .tabs li:hover{
 	color: #000;
+	background: #f6f6f6;
 }
 .tab_container .tabs li.selected{
 	border-bottom-color: #fff;
-	background: #fff;
+	
+	background: #f6f6f6;
 	color: #000;
 }
 
-.tab_container .tabs .tab_content{
+.tab_container .tab_content{
 	clear:both;
+	background: #f6f6f6;
 	display: none;
 }
 
-.tab_container .tabs .tab_content.selected{
+.tab_container .tab_content.selected{
 	display: block;
 }
+
+/*************************
+* Code
+*************************/
 code{
 	display: block;
 }
@@ -92,5 +117,5 @@ code, code *{
 code .keyword              { font-weight: bold }
 code .string, code .regexp { color: green }
 code .class, code .special { color: blue }
-code .number               { color: pink }
+code .number               { color: brown }
 code .comment              { color: grey }
