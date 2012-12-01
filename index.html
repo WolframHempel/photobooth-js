@@ -33,7 +33,9 @@
 					<li><a href="#isSupported">isSupported</a></li>
 				</ul>
 			</li>
-			<li><a href="https://github.com/WolframHempel/photobooth-js">Githup Repository</a></li>
+			<li><a href="https://github.com/WolframHempel/photobooth-js">Github Repository</a></li>
+			<li><a href="#browserSupport" title="Browser Support">Browser Support</a></li>
+			<li><a href="#dataUrl" title="Data Url">Storing dataUrls as image</a></li>
 		</ul>
 		<div id="wrapper">
 			<h1><a name="Demo">Photobooth.js</a></h1>
@@ -77,7 +79,7 @@ myPhotobooth.onImage = function( dataUrl ){
 					<div class="gradient"></div>
 					<label><a name="onImage">onImage</a></label>
 					<p>
-						The function that Photobooth calls when the user clicks the trigger. Receives a dataUrl
+						The function that Photobooth calls when the user clicks the camera icon. Receives a dataUrl
 						string as an argument
 					</p>
 					<div class="tab_container">
@@ -139,8 +141,8 @@ myPhotobooth.resize( 400, 300 );
 					<div class="gradient"></div>
 					<label><a name="pause">pause();</a></label>
 					<p>
-						Closes the videostream, cancels the drawing onto the
-						canvas and frees up the webcam. Use <a href="#resume">resume()</a>
+						Closes the videostream, cancels the canvas drawing loop
+						and frees up the webcam. Use <a href="#resume">resume()</a>
 						to continue
 					</p>
 					<div class="tab_container">
@@ -168,7 +170,7 @@ myPhotobooth.pause();
 					<div class="gradient"></div>
 					<label><a name="resume">resume();</a></label>
 					<p>
-						Resumes video playback that had been paused with <a href="#pause">pause()</a> before.
+						Resumes video playback that had previously been paused with <a href="#pause">pause()</a>.
 					</p>
 					<div class="tab_container">
 						<ul class="tabs">
@@ -196,7 +198,7 @@ myPhotobooth.resume();
 					<label><a name="destroy">destroy();</a></label>
 					<p>
 						Destroys the photobooth. Closes the video stream, cancels all
-						outstanding frames and destroys the DOM Elements and eventlisteners.
+						outstanding frames and destroys the DOM elements and eventlisteners.
 					</p>
 					<div class="tab_container">
 						<ul class="tabs">
@@ -279,9 +281,35 @@ if( !myPhotobooth.isSupported )
 					</div>
 				</li>
 			</ul>
+			<h2><a name="dataUrl">Storing dataUrls as image</a></h2>
+			The user clicked the camera icon, your <code>onImage()</code> function get's called and receives a dataUrl... now what?
+
+			<h3>In the Browser</h3>
+
+			<h3>Sending the image to the server</h3>
+
+			<h3>Storing the image on the server</h3>
+			Storing your dataUrl as an image is easy when you know how. A dataUrl consists of two parts, seperated by a come: a meta-data section at 
+			the start and the actual data
+
+			<code>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAA...</code>
+
+			The String after the comma is base64 encoded binary data. So in order to save it as an image you need to
+
+			1) Split the dataUrl on the first comma
+			2) base64 decode the data ( emphasize on DECODE, not encode )
+			Every major serverside language has a built in way of doing that. E.g.
+
+			PHP 
+			$dataUrlParts = explode( ",", $dataUrl);
+			base64_decode( $dataUrlParts[ 1 ] );
+			Node.js
+			var dataUrl = "data:image/jpeg;base64,/9j/4AAQSkZJRgA...";
+			var buffer = new Buffer( dataUrl.split( "," )[ 1 ], 'base64');
+			require( "fs" ).writeFileSync( "image.jpg", buffer.toString( 'binary' ), "binary" );
+
+			3) Save the result to a file and name it yourImage.png ( or jpeg, depending on the dataUrl type )
 		</div>
 		<script type="text/javascript" src="page_script/hijs.js"></script>
 	</body>
 </html>
-
-

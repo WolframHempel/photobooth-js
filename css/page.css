@@ -65,11 +65,15 @@ h3, h3 a{
 }
 
 #nav li{
-	margin: 5px 0;
+	margin: 6px 0;
 	text-align: right;
+}
+#nav li li{
+	margin: 3px 0;
 }
 #nav li li a{
 	font-size: 12px;
+	color: #888;
 }
 
 

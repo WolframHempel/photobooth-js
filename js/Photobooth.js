@@ -26,6 +26,48 @@ Photobooth = function( container )
 	this.onImage = function(){};
 
 	/**
+	* Closes the videostream, cancels the canvas drawing loop
+	* and frees up the webcam. Use resume()
+	* to continue
+	*/
+	this.pause = function()
+	{
+		if( bIsStopped === false )
+		{
+			bIsStopped = true;
+
+			if( oStream )
+			{
+				oStream.stop();
+			}
+		}
+	};
+
+	/**
+	* Resumes video playback that had previously
+	* been paused with pause().
+	*/
+	this.resume = function()
+	{
+		if( bIsStopped === true )
+		{
+			bIsStopped = false;
+			fRequestWebcamAccess();
+		}
+	};
+
+	/**
+	* Destroys the photobooth. Closes the video stream,
+	* cancels all outstanding frames and destroys
+	* the DOM elements and eventlisteners.
+	*/
+	this.destroy = function()
+	{
+		this.pause();
+		ePhotobooth.remove();
+	};
+
+	/**
 	* Drawing every frame of a video onto
 	* a canvas and performing some pixel
 	* manipulation ( like Photobooth does )
@@ -81,6 +123,8 @@ Photobooth = function( container )
 		saturationOffset = 0,
 		brightnessOffset = 0,
 		bVideoOnly = false,
+		bIsStopped = false,
+		oStream = null,
 		scope = this,
 		_width = container.offsetWidth,
 		_height = container.offsetHeight;
@@ -189,8 +233,10 @@ Photobooth = function( container )
 	};
 	
 
-	var fOnStream = function( oStream )
+	var fOnStream = function( stream )
 	{
+		oStream = stream;
+
 		try{
 			/**
 			* Chrome
@@ -315,8 +361,12 @@ Photobooth = function( container )
 		}
 
 		oOutput.putImageData( oImgData, 0, 0 );
-
-		fGetAnimFrame( fNextFrame );
+		
+		if( bIsStopped === false )
+		{
+			fGetAnimFrame( fNextFrame );
+		}
+		
 	};
 
 	if( !fGetUserMedia ) c( "notSupported" )[ 0 ].style.display = "block";
