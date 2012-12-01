@@ -14,4 +14,12 @@ $(function(){
 			$( elem ).find( ".tab_content." + $(this).attr( "calls" ) ).show();
 		});
 	});
+
+	/**
+	* Link highlighting
+	*/
+	$( "#nav a" ).click(function(){
+		$( "#nav a.selected" ).removeClass( "selected" );
+		$( this ).addClass( "selected" );
+	});
 });

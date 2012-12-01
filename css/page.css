@@ -6,6 +6,10 @@
 	color: #444;
 }
 
+body,html{
+	height: 100%;
+}
+
 h1,h2,h3, h2 a, h3 a{
 	font-family: 'Abel', sans-serif;
 	color: #000;
@@ -39,22 +43,93 @@ h3, h3 a{
 	height: 300px;
 }
 
+
 #nav{
 	position: fixed;
 	left: 50%;
-	margin-left: -390px;
-	width: 150px;
+	margin-left: -450px;
+	width: 170px;
 }
-dl dt{
-	display: block;
-	padding: 4px;
-}
-dl dt,dl dt *{
-	font-weight: bold;
-
+#nav a{
 	font-size: 14px;
-	
+	text-decoration: none;
+	-webkit-transition: color 500ms ease;
+	-moz-transition: color 500ms ease;
+	-o-transition: color 500ms ease;
+	transition: color 500ms ease;
+	-msie-transition: color 500ms ease;
+}
+#nav a.selected,
+#nav a:hover{
+	color: #0da4d3;
+}
 
+#nav li{
+	margin: 5px 0;
+	text-align: right;
+}
+#nav li li a{
+	font-size: 12px;
+}
+
+
+.downloadButton{
+	box-shadow: inset 0px 1px 0px 0px #bbdaf7;
+	border:1px solid #08536a;
+	display: block;
+	border-radius: 2px;
+	padding: 10px;background: #0da4d3; /* Old browsers */
+	background: #0c89b0; /* Old browsers */
+
+
+}
+.downloadButton:hover{
+	opacity: 0.7;
+}
+.downloadButton strong{
+	font-size: 18px;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: 0px -1px 0px rgba(000,000,000,0.2), 0px 1px 0px rgba(255,255,255,1);
+}
+.downloadButton small{
+	font-size: 10px;
+	color:#fff;
+}
+/*****************
+* API DOCS
+*****************/
+
+.docEntry{
+	position: relative;
+	padding-left: 20px;
+	margin: 10px 0 20px;
+}
+
+.docEntry label a{
+	display: block;
+	padding: 5px 0;
+	font: 14px monospace;
+	color: #000;
+	font-weight: bold;
+}
+.docEntry label a:target{
+	background: #0da4d3;
+	color: #fff;
+}
+.gradient{
+	width: 4px;
+	height: 100%;
+	background: #0da4d3; /* Old browsers */
+	background: -moz-linear-gradient(top,  #0da4d3 0%, #0d5cd3 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0da4d3), color-stop(100%,#0d5cd3)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #0da4d3 0%,#0d5cd3 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #0da4d3 0%,#0d5cd3 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #0da4d3 0%,#0d5cd3 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #0da4d3 0%,#0d5cd3 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0da4d3', endColorstr='#0d5cd3',GradientType=0 ); /* IE6-9 */
+	position: absolute;
+	left: 0;
 }
 /***************
 * Tabs

@@ -13,9 +13,27 @@
 	</head>
 	<body>
 		<ul id="nav">
-			<li><a href="#Demo" title="Demo">Demo</a></li>
+			<li>
+				<a href="photobooth_min.js" target="_blank" class="downloadButton">
+					<strong>DOWNLOAD</strong>&nbsp;<small>(12kb)<br />
+					everything in one JS File<br />
+					no Dependencies</small>
+				</a>
+			</li>
+			<li><a class="selected" href="#Demo" title="Demo">Demo</a></li>
 			<li><a href="#Usage" title="Usage">Usage</a></li>
-			<li><a href="#Documentation" title="Documentation">Documentation</a></li>
+			<li><a href="#Api" title="Api">Api</a>
+				<ul>
+					<li><a href="#onImage">onImage</a></li>
+					<li><a href="#resize">resize</a></li>
+					<li><a href="#pause">pause</a></li>
+					<li><a href="#resume">resume</a></li>
+					<li><a href="#destroy">destroy</a></li>
+					<li><a href="#forceHSB">forceHSB</a></li>
+					<li><a href="#isSupported">isSupported</a></li>
+				</ul>
+			</li>
+			<li><a href="https://github.com/WolframHempel/photobooth-js">Githup Repository</a></li>
 		</ul>
 		<div id="wrapper">
 			<h1><a name="Demo">Photobooth.js</a></h1>
@@ -49,11 +67,47 @@ myPhotobooth.onImage = function( dataUrl ){
 					</code>
 				</div>
 			</div>
-			<h2><a href="Documentation">Documentation</a></h2>
-			<ul class="documentation">
+			<h2><a name="Api">Api</a></h2>
+			<ul class="Methods">
+
+						<!--
+				onImage
+				-->
 				<li class="docEntry">
 					<div class="gradient"></div>
-					<label>resize( with, height );</label>
+					<label><a name="onImage">onImage</a></label>
+					<p>
+						The function that Photobooth calls when the user clicks the trigger. Receives a dataUrl
+						string as an argument
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+$( '#example' ).on( "image", function( event, dataUrl ){
+	 // do stuff...
+});
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+myPhotobooth.onImage = function( dataUrl ){
+	 // do stuff...
+};
+							</code>
+						</div>
+					</div>
+				</li>
+
+				<!--
+				resize
+				-->
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label><a name="resize">resize( with, height );</a></label>
 					<p>
 						Resizes the photobooth to the specified width and height ( in Pixel );
 						<div class="info">Minimum width and height are 200px</div>
@@ -75,20 +129,156 @@ myPhotobooth.resize( 400, 300 );
 						</div>
 					</div>
 				</li>
-			</ul>
+
+		
+
 				<!--
-				<dd>
-					
-					
-					
-				</dd>
-				<dt>onImage</dt>
-				<dd></dd>
-				<dt>forceHSB</dt>
-				<dd></dd>
-				<dt>isSupported</dt>
-				<dd></dd>
-			</dl>-->
+				pause
+				-->
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label><a name="pause">pause();</a></label>
+					<p>
+						Closes the videostream, cancels the drawing onto the
+						canvas and frees up the webcam. Use <a href="#resume">resume()</a>
+						to continue
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+$( '#example' ).data( "photobooth" ).pause();
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+myPhotobooth.pause();
+							</code>
+						</div>
+					</div>
+				</li>
+
+				<!--
+				resume
+				-->
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label><a name="resume">resume();</a></label>
+					<p>
+						Resumes video playback that had been paused with <a href="#pause">pause()</a> before.
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+$( '#example' ).data( "photobooth" ).resume();
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+myPhotobooth.resume();
+							</code>
+						</div>
+					</div>
+				</li>
+
+				<!--
+				destroy
+				-->
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label><a name="destroy">destroy();</a></label>
+					<p>
+						Destroys the photobooth. Closes the video stream, cancels all
+						outstanding frames and destroys the DOM Elements and eventlisteners.
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+$( '#example' ).data( "photobooth" ).destroy();
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+myPhotobooth.destroy();
+							</code>
+						</div>
+					</div>
+				</li>
+
+				<!--
+				forceHSB
+				-->
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label><a name="forceHSB">forceHSB</a></label>
+					<p>
+						Photobooth's hue/saturation/brightness adjusment is by default turned of
+						in Firefox for performance reasons.
+						In order to override this setting, set forceHSB to true.
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+$( '#example' ).data( "photobooth" ).forceHSB = true;
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+myPhotobooth.forceHSB = true;
+							</code>
+						</div>
+					</div>
+				</li>
+
+				<!--
+				isSupported
+				-->
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label><a name="isSupported">isSupported</a></label>
+					<p>
+						is true if the browser supports webcams ( getUserMedia )
+						and false if not.
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+if( !$( '#example' ).data( "photobooth" ).isSupported )
+{
+	// do stuff...
+}
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+if( !myPhotobooth.isSupported )
+{
+	// do stuff...
+}
+							</code>
+						</div>
+					</div>
+				</li>
+			</ul>
 		</div>
 		<script type="text/javascript" src="page_script/hijs.js"></script>
 	</body>
