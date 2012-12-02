@@ -36,7 +36,7 @@ Photobooth = function( container )
 		{
 			bIsStopped = true;
 
-			if( oStream )
+			if( oStream && oStream.stop )
 			{
 				oStream.stop();
 			}
@@ -64,7 +64,7 @@ Photobooth = function( container )
 	this.destroy = function()
 	{
 		this.pause();
-		ePhotobooth.remove();
+		container.removeChild( ePhotobooth );
 	};
 
 	/**
@@ -190,19 +190,32 @@ Photobooth = function( container )
 		eBlind.style.opacity = 1;
 		setTimeout(function(){ eBlind.className = "blind anim"; eBlind.style.opacity = 0; }, 50);
 
-		var mData;
+		var mData = {};
 		if( oResizeHandle.isActive() )
 		{
 			mData = oResizeHandle.getData();
 		}
 		else
 		{
-			mData = {
-				x:0,
-				y:0,
-				width: _width,
-				height: _height
-			};
+			if( bVideoOnly )
+			{
+				mData = {
+					x: ( ( _width - eVideo.videoWidth ) / 2 ),
+					y: ( ( _height - eVideo.videoHeight ) / 2 ),
+					width: eVideo.videoWidth,
+					height: eVideo.videoHeight
+				};
+			}
+			else
+			{
+				mData = {
+					x:0,
+					y:0,
+					width: _width,
+					height: _height
+				};
+			}
+			
 		}
 
 		var eTempCanvas = cE( "canvas" );
@@ -214,8 +227,8 @@ Photobooth = function( container )
 		{
 			eTempCanvas.getContext( "2d" ).drawImage(
 				eVideo,
-				mData.x - ( ( _width - eVideo.videoWidth ) / 2 ),
-				mData.y - ( ( _height - eVideo.videoHeight ) / 2 ),
+				Math.max( 0, mData.x - ( ( _width - eVideo.videoWidth ) / 2 ) ),
+				Math.max( mData.y - ( ( _height - eVideo.videoHeight ) / 2 ) ),
 				mData.width,
 				mData.height,
 				0,

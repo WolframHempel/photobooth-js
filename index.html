@@ -24,6 +24,7 @@
 			<li><a href="#Usage" title="Usage">Usage</a></li>
 			<li><a href="#Api" title="Api">Api</a>
 				<ul>
+					<li><a href="#Photobooth">Photobooth</a></li>
 					<li><a href="#onImage">onImage</a></li>
 					<li><a href="#resize">resize</a></li>
 					<li><a href="#pause">pause</a></li>
@@ -49,7 +50,7 @@
 				</ul>
 				<div class="tab_content jquery selected">
 					<code>
-$( '#example' ).photobooth().on( "image", function( event, dataUrl ){
+$('#example').photobooth().on("image",function( event, dataUrl ){
 	$( "#gallery" ).append( '&lt;img src="' + dataUrl + '" &gt;');
 });
 					</code>
@@ -71,8 +72,34 @@ myPhotobooth.onImage = function( dataUrl ){
 			</div>
 			<h2><a name="Api">Api</a></h2>
 			<ul class="Methods">
-
-						<!--
+				<!--
+				Photobooth
+				-->
+				<li class="docEntry">
+					<div class="gradient"></div>
+					<label><a name="Photobooth">new Photobooth( DOMElement );</a></label>
+					<p>
+						Creates the photobooth in the specified DOMElement. If the provided DOMElement isn't attached
+						yet, <a href="#resize">resize()</a> needs to be called to set Photobooth's size.
+					</p>
+					<div class="tab_container">
+						<ul class="tabs">
+							<li calls="jquery" class="selected">jQuery</li>
+							<li calls="standalone" >standalone</li>
+						</ul>
+						<div class="tab_content jquery selected">
+							<code>
+$( '#example' ).photobooth();
+							</code>
+						</div>
+						<div class="tab_content standalone">
+							<code>
+myPhotobooth = new Photobooth( document.getElementById( "container" ) );
+							</code>
+						</div>
+					</div>
+				</li>
+				<!--
 				onImage
 				-->
 				<li class="docEntry">
@@ -303,6 +330,8 @@ if( !myPhotobooth.isSupported )
 			PHP 
 			$dataUrlParts = explode( ",", $dataUrl);
 			base64_decode( $dataUrlParts[ 1 ] );
+
+			
 			Node.js
 			var dataUrl = "data:image/jpeg;base64,/9j/4AAQSkZJRgA...";
 			var buffer = new Buffer( dataUrl.split( "," )[ 1 ], 'base64');
