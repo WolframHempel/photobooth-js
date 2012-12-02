@@ -143,8 +143,8 @@ Photobooth = function( container )
 	var cE = function( s ){ return document.createElement( s ); };
 
 	var ePhotobooth = cE( "div" );
-	ePhotobooth.className = "Photobooth";
-	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry,Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
+	ePhotobooth.className = "photobooth";
+	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry, Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
 
 	var eInput = cE( "canvas" );
 	var oInput = eInput.getContext( "2d" );
@@ -382,12 +382,18 @@ Photobooth = function( container )
 		
 	};
 
-	if( !fGetUserMedia ) c( "notSupported" )[ 0 ].style.display = "block";
-
-	/**
-	* Startup
-	*/
 	this.resize( _width, _height );
 	container.appendChild( ePhotobooth );
-	fGetAnimFrame( fRequestWebcamAccess );
+
+	if( fGetUserMedia )
+	{
+		/**
+		* Startup
+		*/
+		fGetAnimFrame( fRequestWebcamAccess );
+	}
+	else
+	{
+		c( "notSupported" ).style.display = "block";
+	}
 };

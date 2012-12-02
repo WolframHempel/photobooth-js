@@ -18,8 +18,8 @@ $(function(){
 	/**
 	* Link highlighting
 	*/
-	$( "#nav a" ).click(function(){
+	$( "a" ).click(function(){
 		$( "#nav a.selected" ).removeClass( "selected" );
-		$( this ).addClass( "selected" );
+		$( "#nav a[href=" + $(this).attr( "href" ) + "]" ).addClass( "selected" );
 	});
 });

@@ -25,10 +25,17 @@ h1,h2,h3, h2 a, h3 a{
 h1{
 	width: 470px;
 	height: 140px;
-	text-indent: -9999;
+	position: relative;
 	background: url( ../img/photoboothjs.png ) no-repeat;
 }
-
+h1 a{
+	color: #aaa;
+	font-size: 14px;
+	position: absolute;
+	left: 143px;
+	top: 95px;
+	text-decoration: none;
+}
 h2, h2 a{
 	margin: 20px 0 5px;
 	font-size: 20px;
@@ -76,6 +83,10 @@ h3, h3 a{
 	color: #888;
 }
 
+#gallery{
+	margin: 5px 0;
+	background: #f6f6f6;
+}
 
 .downloadButton{
 	box-shadow: inset 0px 1px 0px 0px #bbdaf7;
