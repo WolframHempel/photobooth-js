@@ -18,7 +18,7 @@ h1,h2,h3, h2 a, h3 a{
 
 #wrapper{
 	width: 470px;
-	margin: 10px auto;
+	margin: 10px auto 30px;
 	position: relative;
 }
 
@@ -99,6 +99,29 @@ h3, h3 a{
 .downloadButton small{
 	font-size: 10px;
 	color:#fff;
+}
+/*****************
+* Browser Support Table
+*****************/
+.browserSupport{
+	width: 100%;
+	margin: 6px 0 10px;
+}
+.browserSupport td{
+	margin: 2px;
+	padding: 2px;
+	background: #f6f6f6;
+	text-align: center;
+	font-weight: bold;
+}
+.browserSupport td.full{
+	background: #adf0b5;
+}
+.browserSupport td.partial{
+	background: #f0efad;
+}
+.browserSupport td.none{
+	background: #f0adad;
 }
 /*****************
 * API DOCS

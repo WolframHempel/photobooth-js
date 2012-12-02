@@ -20,6 +20,7 @@
 			</li>
 			<li><a class="selected" href="#Demo" title="Demo">Demo</a></li>
 			<li><a href="#Usage" title="Usage">Usage</a></li>
+			<li><a href="#browserSupport" title="Browser Support">Browser Support</a></li>
 			<li><a href="#Api" title="Api">Api</a>
 				<ul>
 					<li><a href="#Photobooth">Photobooth</a></li>
@@ -32,9 +33,9 @@
 					<li><a href="#isSupported">isSupported</a></li>
 				</ul>
 			</li>
-			<li><a href="https://github.com/WolframHempel/photobooth-js">Github Repository</a></li>
-			<li><a href="#browserSupport" title="Browser Support">Browser Support</a></li>
-			<li><a href="#dataUrl" title="Data Url">Storing dataUrls as image</a></li>
+			<li><a href="https://github.com/WolframHempel/photobooth-js" target="_blank">Github Repository</a></li>
+			
+			<!--<li><a href="#dataUrl" title="Data Url">Storing dataUrls as image</a></li>-->
 		</ul>
 		<div id="wrapper">
 			<h1><a name="Demo">Photobooth.js</a></h1>
@@ -68,6 +69,30 @@ myPhotobooth.onImage = function( dataUrl ){
 					</code>
 				</div>
 			</div>
+
+						<h2><a name="browserSupport">Browser Support</a></h2>
+			<p>
+				Photobooth is supported in all browsers that support navigator.getUserMedia. In Firefox
+				some features are disabled for performance reasons. To override this use <a href="#forceHSB">forceHSB</a>.
+				<table class="browserSupport">
+					<tbody>
+						<tr>
+							<td><img src="website/img/chrome.png" title="Google Chrome" /></td>
+							<td><img src="website/img/firefox.png" title="Mozilla Firefox" /></td>
+							<td><img src="website/img/ie.png" title="Internet Explorer" /></td>
+							<td><img src="website/img/opera.png" title="Opera" /></td>
+							<td><img src="website/img/safari.png" title="Safari" /></td>
+						</tr>
+						<tr>
+							<td class="full">since 21</td>
+							<td class="partial">since 17</td>
+							<td class="none">no</td>
+							<td class="full">since 12</td>
+							<td class="none">no</td>
+						</tr>
+					</tbody>
+				</table>
+			</p>
 			<h2><a name="Api">Api</a></h2>
 			<ul class="Methods">
 				<!--
@@ -306,6 +331,8 @@ if( !myPhotobooth.isSupported )
 					</div>
 				</li>
 			</ul>
+
+			<!--
 			<h2><a name="dataUrl">Storing dataUrls as image</a></h2>
 			The user clicked the camera icon, your <code>onImage()</code> function get's called and receives a dataUrl... now what?
 
@@ -336,6 +363,7 @@ if( !myPhotobooth.isSupported )
 			require( "fs" ).writeFileSync( "image.jpg", buffer.toString( 'binary' ), "binary" );
 
 			3) Save the result to a file and name it yourImage.png ( or jpeg, depending on the dataUrl type )
+		-->
 		</div>
 		<script type="text/javascript" src="website/js/hijs.js"></script>
 	</body>
