@@ -21,7 +21,9 @@ h1,h2,h3, h2 a, h3 a{
 	margin: 10px auto 30px;
 	position: relative;
 }
-
+em{
+	font-style: italic;
+}
 h1{
 	width: 470px;
 	height: 140px;
