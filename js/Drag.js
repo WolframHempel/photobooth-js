@@ -1,37 +1,47 @@
-Drag = function( element )
+var Drag = function( element )
 {
-	var startX = 0,
-		startY = 0,
-		scope = this;
+	this.startX = 0;
+	this.startY = 0;
 
-	this.onStart = function(){};
-	this.onMove = function(){};
-	this.onStop = function(){};
+	element.addEventListener( "mousedown", this, false );
+};
 
+/**
+ * functionality implemented after instantiation.
+ *
+ * @param x = number // x coordinate of drag event
+ * @param y = number // y coordinate of drag event
+ */
+Drag.prototype.onStart = function ( x, y ) {};
+Drag.prototype.onMove = function ( x, y ) {};
+Drag.prototype.onStop = function ( x, y ) {};
 
-	var fOnMouseDown = function( e )
-	{
-		e.preventDefault();
-		startX = e.clientX;
-		startY = e.clientY;
+Drag.prototype.handleEvent = function ( event ) {
+	this['fon'+event.type](event);
+};
 
-		scope.onStart( startX, startY );
+Drag.prototype.fonmousedown = function ( e )
+{
+	e.preventDefault();
 
-		document.addEventListener( "mousemove", fOnMouseMove, false );
-		document.addEventListener( "mouseup", fOnMouseUp, false );
-	};
+	this.startX = e.clientX;
+	this.startY = e.clientY;
 
-	var fOnMouseMove = function( e )
-	{
-		scope.onMove( e.clientX - startX, e.clientY - startY );
-	};
+	this.onStart( this.startX, this.startY );
 
-	var fOnMouseUp = function( e )
-	{
-		scope.onStop( e.clientX - startX, e.clientY - startY );
-		document.removeEventListener( "mousemove", fOnMouseMove );
-		document.removeEventListener( "mouseup", fOnMouseUp );
-	};
+	document.addEventListener( "mousemove", this, false );
+	document.addEventListener( "mouseup", this, false );
+};
 
-	element.addEventListener( "mousedown", fOnMouseDown, false );
+Drag.prototype.fonmousemove = function( e )
+{
+	this.onMove( e.clientX - this.startX, e.clientY - this.startY );
+};
+
+Drag.prototype.fonmouseup = function( e )
+{
+	this.onStop( e.clientX - this.startX, e.clientY - this.startY );
+
+	document.removeEventListener( "mousemove", this );
+	document.removeEventListener( "mouseup", this );
 };
