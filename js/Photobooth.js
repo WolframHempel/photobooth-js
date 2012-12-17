@@ -25,6 +25,35 @@ Photobooth = function( container )
 	*/
 	this.onImage = function(){};
 
+	this.getHueOffset = function()
+	{
+		return hueOffset;
+	};
+
+	this.setHueOffset = function( h )
+	{
+		if( fCheckValue( h, "hue" ) ) hueOffset = h;
+	};
+
+	this.getBrightnessOffset = function()
+	{
+		return brightnessOffset;
+	};
+
+	this.setBrightnessOffset = function( b )
+	{
+		if( fCheckValue( b, "brightness" ) ) brightnessOffset = b;
+	};
+
+	this.getSaturationOffset = function()
+	{
+		return saturationOffset;
+	};
+
+	this.setSaturationOffset = function( s )
+	{
+		if( fCheckValue( s, "saturation" ) ) saturationOffset = s;
+	};
 	/**
 	* Closes the videostream, cancels the canvas drawing loop
 	* and frees up the webcam. Use resume()
@@ -128,6 +157,18 @@ Photobooth = function( container )
 		scope = this,
 		_width = container.offsetWidth,
 		_height = container.offsetHeight;
+
+	var fCheckValue = function( val, type )
+	{
+		if( val < -0.5 || val > 0.5 )
+		{
+			throw "Invalid value: " + type + " must be between 0 and 1";
+		}
+		else
+		{
+			return true;
+		}
+	};
 
 	var fGetAnimFrame =
 	(
