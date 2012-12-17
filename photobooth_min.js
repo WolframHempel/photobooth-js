@@ -2,7 +2,7 @@
 *
 * Photobooth.js version 0.7
 *
-* build Mon Dec 17 2012 20:45:44 GMT+0000 (GMT Standard Time)
+* build Mon Dec 17 2012 20:48:31 GMT+0000 (GMT Standard Time)
 *
 * CSS
 */
