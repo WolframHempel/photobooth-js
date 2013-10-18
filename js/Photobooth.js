@@ -357,7 +357,11 @@ Photobooth = function( container )
 
 	var fNextFrame = function()
 	{
-		oInput.drawImage( eVideo, 0, 0, _width, _height );
+		try
+		{
+			oInput.drawImage( eVideo, 0, 0, _width, _height );
+		}
+		catch(e){}
 		var oImgData = oInput.getImageData( 0, 0, _width, _height );
 		var pData = oImgData.data;
 
