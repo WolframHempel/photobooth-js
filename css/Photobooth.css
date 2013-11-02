@@ -60,6 +60,8 @@
 	height: 190px;
 	z-index: 2;
 	border-bottom-left-radius: 5px;
+	list-style: none;
+	padding-left: 0; 
 }
 
 
@@ -154,7 +156,7 @@
 	height: 14px;
 	width: 2px;
 	position: absolute;
-	top:3;
+	top:3px;
 	background:#fff;
 	z-index: 2;
 }
