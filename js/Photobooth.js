@@ -1,5 +1,7 @@
 Photobooth = function( container )
 {
+
+    var self = this;
 	/**
 	* Make it jQuery friendlier
 	*/
@@ -139,6 +141,63 @@ Photobooth = function( container )
 		eVideo.height = height;
 	};
 
+	this.capture = function () {
+	    /**
+        * Flash
+        */
+	    eBlind.className = "blind";
+	    eBlind.style.opacity = 1;
+	    setTimeout(function () { eBlind.className = "blind anim"; eBlind.style.opacity = 0; }, 50);
+
+	    var mData = {};
+	    if (oResizeHandle.isActive()) {
+	        mData = oResizeHandle.getData();
+	    }
+	    else {
+	        if (bVideoOnly) {
+	            mData = {
+	                x: ((_width - eVideo.videoWidth) / 2),
+	                y: ((_height - eVideo.videoHeight) / 2),
+	                width: eVideo.videoWidth,
+	                height: eVideo.videoHeight
+	            };
+	        }
+	        else {
+	            mData = {
+	                x: 0,
+	                y: 0,
+	                width: _width,
+	                height: _height
+	            };
+	        }
+
+	    }
+
+	    var eTempCanvas = cE("canvas");
+
+	    eTempCanvas.width = mData.width;
+	    eTempCanvas.height = mData.height;
+
+	    if (bVideoOnly) {
+	        eTempCanvas.getContext("2d").drawImage(
+				eVideo,
+				Math.max(0, mData.x - ((_width - eVideo.videoWidth) / 2)),
+				Math.max(mData.y - ((_height - eVideo.videoHeight) / 2)),
+				mData.width,
+				mData.height,
+				0,
+				0,
+				mData.width,
+				mData.height);
+	    }
+	    else {
+	        var oImageData = oOutput.getImageData(mData.x, mData.y, mData.width, mData.height);
+	        eTempCanvas.getContext("2d").putImageData(oImageData, 0, 0);
+	    }
+
+	    scope.onImage(eTempCanvas.toDataURL());
+	};
+
 	/****************************
 	* Private Methods
 	****************************/
@@ -224,66 +283,7 @@ Photobooth = function( container )
 
 	c( "trigger" ).onclick = function()
 	{
-		/**
-		* Flash
-		*/
-		eBlind.className = "blind";
-		eBlind.style.opacity = 1;
-		setTimeout(function(){ eBlind.className = "blind anim"; eBlind.style.opacity = 0; }, 50);
-
-		var mData = {};
-		if( oResizeHandle.isActive() )
-		{
-			mData = oResizeHandle.getData();
-		}
-		else
-		{
-			if( bVideoOnly )
-			{
-				mData = {
-					x: ( ( _width - eVideo.videoWidth ) / 2 ),
-					y: ( ( _height - eVideo.videoHeight ) / 2 ),
-					width: eVideo.videoWidth,
-					height: eVideo.videoHeight
-				};
-			}
-			else
-			{
-				mData = {
-					x:0,
-					y:0,
-					width: _width,
-					height: _height
-				};
-			}
-			
-		}
-
-		var eTempCanvas = cE( "canvas" );
-
-		eTempCanvas.width = mData.width;
-		eTempCanvas.height = mData.height;
-
-		if( bVideoOnly )
-		{
-			eTempCanvas.getContext( "2d" ).drawImage(
-				eVideo,
-				Math.max( 0, mData.x - ( ( _width - eVideo.videoWidth ) / 2 ) ),
-				Math.max( mData.y - ( ( _height - eVideo.videoHeight ) / 2 ) ),
-				mData.width,
-				mData.height,
-				0,
-				0,
-				mData.width,
-				mData.height);
-		}
-		else
-		{
-			var oImageData = oOutput.getImageData( mData.x, mData.y, mData.width, mData.height );
-			eTempCanvas.getContext( "2d" ).putImageData( oImageData, 0, 0 );
-		}
-
-		scope.onImage( eTempCanvas.toDataURL() );
+	    self.capture();
 	};
 	
 
