@@ -15,6 +15,39 @@ var ResizeHandle = function( eContainer, maxWidth, maxHeight )
 			height: height
 		};
 	};
+
+	this.cropMove = function( x, y )
+	{
+		if( x + width < maxWidth && x > 0 )
+		{
+			tempLeft = x;
+			element.style.left = tempLeft + "px";
+		}
+		if( y + height < maxHeight && y > 0 )
+		{
+			tempTop = y;
+			element.style.top = tempTop + "px";
+		}
+		left = tempLeft;
+		top = tempTop;
+	};
+
+	this.cropResize = function( x, y )
+	{
+		if( left + x < maxWidth && x > 18 )
+		{
+			tempWidth = x;
+			element.style.width = tempWidth + "px";
+
+		}
+		if( top + y  < maxHeight &&  y > 18 )
+		{
+			tempHeight = y;
+			element.style.height = tempHeight + "px";
+		}
+		width = tempWidth;
+		height = tempHeight;
+	};
 	
 	this.isActive = function()
 	{
@@ -82,7 +115,7 @@ var ResizeHandle = function( eContainer, maxWidth, maxHeight )
 	var eResizeHandle = element.getElementsByTagName( "div" )[ 1 ];
 	eResizeHandle.addEventListener( "mousedown", fCancelBubble, false );
 	var oResizeDrag = new Drag( eResizeHandle );
-
+	
 	oResizeDrag.onMove = function( x, y )
 	{
 		if( left + x + width < maxWidth && width + x > 18 )
