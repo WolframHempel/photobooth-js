@@ -56,6 +56,26 @@ Photobooth = function( container )
 	{
 		if( fCheckValue( s, "saturation" ) ) saturationOffset = s;
 	};
+
+	this.setCrop = function()
+	{
+		oResizeHandle.toggle();
+		if( eCrop.className === "crop" )
+		{
+			eCrop.className = "crop selected";
+		}
+		else
+		{
+			eCrop.className = "crop";
+		}
+	};
+
+	this.crop = function(x,y,width,height)
+	{
+		oResizeHandle.cropMove(x,y);
+		oResizeHandle.cropResize(width,height);
+	};
+
 	/**
 	* Closes the videostream, cancels the canvas drawing loop
 	* and frees up the webcam. Use resume()
