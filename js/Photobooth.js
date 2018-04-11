@@ -112,6 +112,17 @@ Photobooth = function( container )
 	this.forceHSB = false;
 
 	/**
+	* Default image format, image/jpeg is also
+	* commonly supported
+	*/ 
+	this.mimeType = 'image/png';
+
+	/**
+	* image/jpeg quality, valid range is 0.0 to 1.0
+	*/
+	this.quality = 1;
+
+	/**
 	* True if the browser supports Webcam streams,
 	* false if not
 	*/
@@ -205,7 +216,7 @@ Photobooth = function( container )
 	        eTempCanvas.getContext("2d").putImageData(oImageData, 0, 0);
 	    }
 
-	    scope.onImage(eTempCanvas.toDataURL());
+	    scope.onImage(eTempCanvas.toDataURL(scope.mimeType,scope.quality));
 	};
 
 	/****************************
