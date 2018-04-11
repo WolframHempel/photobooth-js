@@ -1,8 +1,8 @@
 /**
 *
-* Photobooth.js version 0.7-rsd
+* Photobooth.js version 0.7-rsd1
 *
-* build Wed Apr 11 2018 02:57:51 GMT-0300 (-03)
+* build Wed Apr 11 2018 16:09:56 GMT-0300 (-03)
 *
 * CSS
 */
