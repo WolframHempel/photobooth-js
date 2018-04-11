@@ -20,5 +20,8 @@
     "test",
     "tests",
     "build"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
 }
