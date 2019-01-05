@@ -262,7 +262,7 @@ Photobooth = function( container )
 		oStream = null,
 		scope = this,
 		_width = container.offsetWidth === 0 ? $(container).width() : container.offsetWidth,
-		_height = container.offsetHeight === 0 ? $(container).height() :container.offsetWidth;
+		_height = container.offsetHeight === 0 ? $(container).height() :container.offsetHeight;
 
 	var fCheckValue = function( val, type )
 	{
