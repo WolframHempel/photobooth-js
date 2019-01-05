@@ -1,7 +1,6 @@
 Photobooth = function( container )
 {
-
-    var self = this;
+	var self = this;
 	/**
 	* Make it jQuery friendlier
 	*/
