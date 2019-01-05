@@ -11,6 +11,7 @@ Photobooth = function( container )
 
 	var fGetUserMedia =
 	(
+		navigator.mediaDevices.getUserMedia ||
 		navigator.getUserMedia ||
 		navigator.webkitGetUserMedia ||
 		navigator.mozGetUserMedia ||
@@ -335,22 +336,9 @@ Photobooth = function( container )
 
 	var fOnStream = function( stream )
 	{
-		oStream = stream;
-
-		try{
-			/**
-			* Chrome
-			*/
-			eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( oStream );
-			fGetAnimFrame( fNextFrame );
-		}
-		catch( e )
+		if ( typeof eVideo.srcObject === "object" )
 		{
-			/**
-			* Firefox
-			*/
-			eVideo.mozSrcObject  =   oStream ;
-
+			eVideo.srcObject = stream;
 			if( scope.forceHSB === false )
 			{
 				bVideoOnly = true;
@@ -364,6 +352,39 @@ Photobooth = function( container )
 
 			eVideo.play();
 		}
+		else
+		{
+			/**
+			 * Legacy support
+			 */
+			try{
+				/**
+				 * Chrome
+				 */
+				eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( stream );
+				fGetAnimFrame( fNextFrame );
+			}
+			catch( e )
+			{
+				/**
+				 * Firefox
+				 */
+				eVideo.mozSrcObject  =   stream ;
+
+				if( scope.forceHSB === false )
+				{
+					bVideoOnly = true;
+					ePhotobooth.appendChild( eVideo );
+					ePhotobooth.getElementsByTagName( "ul" )[ 0 ].className = "noHSB";
+				}
+				else
+				{
+					eVideo.addEventListener( "canplay", function(){ fGetAnimFrame( fNextFrame ); }, false );
+				}
+
+				eVideo.play();
+			}
+		}
 	};
 
 	var fOnStreamError = function( e )
@@ -374,7 +395,10 @@ Photobooth = function( container )
 	var fRequestWebcamAccess = function()
 	{
 		eNoWebcamWarning.style.display = "none";
-		fGetUserMedia.call( navigator, {"video" : true }, fOnStream, fOnStreamError );
+		if ( navigator.mediaDevices.getUserMedia )
+			navigator.mediaDevices.getUserMedia({"video" : true }).then( fOnStream ).catch( fOnStreamError );
+		else
+			fGetUserMedia.call( navigator, {"video" : true }, fOnStream, fOnStreamError );
 	};
 
 	var fHue2rgb = function (p, q, t)
