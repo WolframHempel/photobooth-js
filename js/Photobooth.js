@@ -291,7 +291,7 @@ Photobooth = function( container )
 
 	var ePhotobooth = cE( "div" );
 	ePhotobooth.className = "photobooth";
-	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry, Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
+	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry, Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="flip"class="flip"></li><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
 
 	var eInput = cE( "canvas" );
 	var oInput = eInput.getContext( "2d" );
@@ -330,9 +330,14 @@ Photobooth = function( container )
 
 	c( "trigger" ).onclick = function()
 	{
-	    self.capture();
+		self.capture();
 	};
-	
+
+	var eFlip = c( "flip" );
+	eFlip.onclick = function()
+	{
+		self.destroy();
+	};
 
 	var fOnStream = function( stream )
 	{
