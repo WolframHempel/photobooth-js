@@ -338,10 +338,13 @@ Photobooth = function( container )
 		self.capture();
 	};
 
+	var fFlipFront = false;
 	var eFlip = c( "flip" );
 	eFlip.onclick = function()
 	{
-		self.destroy();
+		fFlipFront = ! fFlipFront;
+		self.pause();
+		self.resume();
 	};
 
 	var fOnStream = function( stream )
@@ -405,11 +408,12 @@ Photobooth = function( container )
 
 	var fRequestWebcamAccess = function()
 	{
+		var constraints = {"video" : { facingMode: (fFlipFront? "user" : "environment") } };
 		eNoWebcamWarning.style.display = "none";
 		if ( navigator.mediaDevices.getUserMedia )
-			navigator.mediaDevices.getUserMedia({"video" : true }).then( fOnStream ).catch( fOnStreamError );
+			navigator.mediaDevices.getUserMedia( constraints ).then( fOnStream ).catch( fOnStreamError );
 		else
-			fGetUserMedia.call( navigator, {"video" : true }, fOnStream, fOnStreamError );
+			fGetUserMedia.call( navigator, constraints, fOnStream, fOnStreamError );
 	};
 
 	var fHue2rgb = function (p, q, t)
