@@ -91,6 +91,11 @@ Photobooth = function( container )
 			{
 				oStream.stop();
 			}
+			else
+			{
+				oStream.getTracks().forEach(track => track.stop());
+			}
+
 		}
 	};
 
