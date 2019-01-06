@@ -91,6 +91,11 @@ Photobooth = function( container )
 			{
 				oStream.stop();
 			}
+			else
+			{
+				oStream.getTracks().forEach(track => track.stop());
+			}
+
 		}
 	};
 
@@ -128,6 +133,9 @@ Photobooth = function( container )
 	* of in FF and the video tag is displayed directly.
 	*
 	* To reeanble the Sliders set this property to true
+	*
+	* FIXME: when forceHSB is on, the video gets wrong aspect ratio
+	*        e.g. mobile camera on portrait position
 	*/
 	this.forceHSB = false;
 
@@ -291,7 +299,7 @@ Photobooth = function( container )
 
 	var ePhotobooth = cE( "div" );
 	ePhotobooth.className = "photobooth";
-	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry, Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
+	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry, Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="flip"class="flip"></li><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
 
 	var eInput = cE( "canvas" );
 	var oInput = eInput.getContext( "2d" );
@@ -330,15 +338,24 @@ Photobooth = function( container )
 
 	c( "trigger" ).onclick = function()
 	{
-	    self.capture();
+		self.capture();
 	};
-	
+
+	var fFlipFront = false;
+	var eFlip = c( "flip" );
+	eFlip.onclick = function()
+	{
+		fFlipFront = ! fFlipFront;
+		self.pause();
+		self.resume();
+	};
 
 	var fOnStream = function( stream )
 	{
+		oStream = stream;
 		if ( typeof eVideo.srcObject === "object" )
 		{
-			eVideo.srcObject = stream;
+			eVideo.srcObject = oStream;
 			if( scope.forceHSB === false )
 			{
 				bVideoOnly = true;
@@ -361,7 +378,7 @@ Photobooth = function( container )
 				/**
 				 * Chrome
 				 */
-				eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( stream );
+				eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( oStream );
 				fGetAnimFrame( fNextFrame );
 			}
 			catch( e )
@@ -369,7 +386,7 @@ Photobooth = function( container )
 				/**
 				 * Firefox
 				 */
-				eVideo.mozSrcObject  =   stream ;
+				eVideo.mozSrcObject  =   oStream ;
 
 				if( scope.forceHSB === false )
 				{
@@ -394,11 +411,18 @@ Photobooth = function( container )
 
 	var fRequestWebcamAccess = function()
 	{
+		/**
+		 * FIXME: test identification thru videoTracks
+		 * var videoTracks = stream.getVideoTracks();
+		 * console.log('Using video device: ' + videoTracks[0].label);
+		 */
+
+		var constraints = {"video" : { facingMode: (fFlipFront? "user" : "environment") } };
 		eNoWebcamWarning.style.display = "none";
 		if ( navigator.mediaDevices.getUserMedia )
-			navigator.mediaDevices.getUserMedia({"video" : true }).then( fOnStream ).catch( fOnStreamError );
+			navigator.mediaDevices.getUserMedia( constraints ).then( fOnStream ).catch( fOnStreamError );
 		else
-			fGetUserMedia.call( navigator, {"video" : true }, fOnStream, fOnStreamError );
+			fGetUserMedia.call( navigator, constraints, fOnStream, fOnStreamError );
 	};
 
 	var fHue2rgb = function (p, q, t)
