@@ -346,9 +346,10 @@ Photobooth = function( container )
 
 	var fOnStream = function( stream )
 	{
+		oStream = stream
 		if ( typeof eVideo.srcObject === "object" )
 		{
-			eVideo.srcObject = stream;
+			eVideo.srcObject = oStream;
 			if( scope.forceHSB === false )
 			{
 				bVideoOnly = true;
@@ -371,7 +372,7 @@ Photobooth = function( container )
 				/**
 				 * Chrome
 				 */
-				eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( stream );
+				eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( oStream );
 				fGetAnimFrame( fNextFrame );
 			}
 			catch( e )
@@ -379,7 +380,7 @@ Photobooth = function( container )
 				/**
 				 * Firefox
 				 */
-				eVideo.mozSrcObject  =   stream ;
+				eVideo.mozSrcObject  =   oStream ;
 
 				if( scope.forceHSB === false )
 				{
