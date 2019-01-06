@@ -133,6 +133,9 @@ Photobooth = function( container )
 	* of in FF and the video tag is displayed directly.
 	*
 	* To reeanble the Sliders set this property to true
+	*
+	* FIXME: when forceHSB is on, the video gets wrong aspect ratio
+	*        e.g. mobile camera on portrait position
 	*/
 	this.forceHSB = false;
 
@@ -408,6 +411,12 @@ Photobooth = function( container )
 
 	var fRequestWebcamAccess = function()
 	{
+		/**
+		 * FIXME: test identification thru videoTracks
+		 * var videoTracks = stream.getVideoTracks();
+		 * console.log('Using video device: ' + videoTracks[0].label);
+		 */
+
 		var constraints = {"video" : { facingMode: (fFlipFront? "user" : "environment") } };
 		eNoWebcamWarning.style.display = "none";
 		if ( navigator.mediaDevices.getUserMedia )
