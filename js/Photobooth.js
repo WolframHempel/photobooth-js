@@ -352,7 +352,7 @@ Photobooth = function( container )
 
 	var fOnStream = function( stream )
 	{
-		oStream = stream
+		oStream = stream;
 		if ( typeof eVideo.srcObject === "object" )
 		{
 			eVideo.srcObject = oStream;
