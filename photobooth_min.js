@@ -2,7 +2,7 @@
 *
 * Photobooth.js version 0.7-rsd2
 *
-* build Sat Jan 05 2019 15:07:57 GMT-0200 (GMT-02:00)
+* build Sun Jan 06 2019 21:14:27 GMT-0200 (-02)
 *
 * CSS
 */
