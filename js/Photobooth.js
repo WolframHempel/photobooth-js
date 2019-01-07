@@ -357,6 +357,7 @@ Photobooth = function( container )
 	var fOnStream = function( stream )
 	{
 		oStream = stream;
+		fFixClasses();
 		if ( typeof eVideo.srcObject === "object" )
 		{
 			eVideo.srcObject = oStream;
@@ -364,16 +365,10 @@ Photobooth = function( container )
 			{
 				bVideoOnly = true;
 				ePhotobooth.appendChild( eVideo );
-				ePhotobooth.getElementsByTagName( "ul" )[ 0 ].classList.add("noHSB");
 			}
 			else
 			{
 				eVideo.addEventListener( "canplay", function(){ fGetAnimFrame( fNextFrame ); }, false );
-			}
-
-			if ( scope.flipCammera === false )
-			{
-				ePhotobooth.getElementsByTagName( "ul" )[ 0 ].classList.add("noFlip");
 			}
 
 			eVideo.play();
@@ -401,7 +396,6 @@ Photobooth = function( container )
 				{
 					bVideoOnly = true;
 					ePhotobooth.appendChild( eVideo );
-					ePhotobooth.getElementsByTagName( "ul" )[ 0 ].className = "noHSB";
 				}
 				else
 				{
@@ -432,6 +426,18 @@ Photobooth = function( container )
 			navigator.mediaDevices.getUserMedia( constraints ).then( fOnStream ).catch( fOnStreamError );
 		else
 			fGetUserMedia.call( navigator, constraints, fOnStream, fOnStreamError );
+	};
+
+	var fFixClasses = function()
+	{
+		if( scope.forceHSB === false )
+		{
+			ePhotobooth.getElementsByTagName( "ul" )[ 0 ].classList.add("noHSB");
+		}
+		if ( scope.flipCammera === false )
+		{
+			ePhotobooth.getElementsByTagName( "ul" )[ 0 ].classList.add("noFlip");
+		}
 	};
 
 	var fHue2rgb = function (p, q, t)
@@ -530,6 +536,7 @@ Photobooth = function( container )
 		
 	};
 
+	fFixClasses();
 	this.resize( _width, _height );
 	container.appendChild( ePhotobooth );
 
