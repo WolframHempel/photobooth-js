@@ -1,6 +1,5 @@
 fs = require( "fs" );
-var jsp = require("uglify-js").parser;
-var pro = require("uglify-js").uglify;
+var uglify = require("uglify-es");
 var cleanCSS = require('clean-css');
 
 var sJs = fs.readFileSync( "../js/Photobooth.js", "utf-8" );
@@ -13,19 +12,13 @@ for( var i = 0; i < pImports.length; i++ )
 	sJs = sJs.replace( pImports[ i ], sInclude );
 }
 
-var fMinifyJs = function( sJavasScript )
-{
-	var ast = jsp.parse( sJavasScript ); // parse code and get the initial AST
-	ast = pro.ast_mangle(ast); // get a new AST with mangled names
-	ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
-	return pro.gen_code(ast);
-};
 /**
 * Compress JavaScript
 * No idea what an ast is...works fine though :-)
 */
 console.log( "Minifying JavaScript");
-sJs = fMinifyJs( sJs );
+sJs = uglify.minify( sJs );
+//console.log("sjs: " + sJs.error + ", " + sJs.code);
 /**
 * Css
 */
@@ -37,7 +30,7 @@ sCss = cleanCSS.process( fs.readFileSync( "../css/Photobooth.css", "utf-8" ) );
 */
 console.log( "Adding jQuery integration");
 sjQuery = fs.readFileSync( "../js/jqueryIntegration.js", "utf-8" );
-sjQuery = fMinifyJs( sjQuery );
+sjQuery = uglify.minify( sjQuery );
 
 
 var sOutput = "";
@@ -53,11 +46,11 @@ sOutput += 'window.addEventListener("load",function(){var s = document.createEle
 sOutput += "/**\n";
 sOutput += "* JS\n";
 sOutput += "*/\n";
-sOutput += sJs;
+sOutput += sJs.code;
 sOutput += "\n/**\n";
 sOutput += "* jQuery integration. (It's safe to delete this line if you're not using jQuery)\n";
 sOutput += "*/\n";
-sOutput += sjQuery;
+sOutput += sjQuery.code;
 
 
 fs.writeFileSync( "../photobooth_min.js", sOutput, "utf-8" );
