@@ -136,7 +136,12 @@ Photobooth = function( container )
 	* FIXME: when forceHSB is on, the video gets wrong aspect ratio
 	*        e.g. mobile camera on portrait position
 	*/
-	this.forceHSB = false;
+	this.forceHSB = true;
+
+	/**
+	 * Flip Camera button
+	 */
+	this.flipCammera = true;
 
 	/**
 	* Default image format, image/jpeg is also
@@ -359,11 +364,16 @@ Photobooth = function( container )
 			{
 				bVideoOnly = true;
 				ePhotobooth.appendChild( eVideo );
-				ePhotobooth.getElementsByTagName( "ul" )[ 0 ].className = "noHSB";
+				ePhotobooth.getElementsByTagName( "ul" )[ 0 ].classList.add("noHSB");
 			}
 			else
 			{
 				eVideo.addEventListener( "canplay", function(){ fGetAnimFrame( fNextFrame ); }, false );
+			}
+
+			if ( scope.flipCammera === false )
+			{
+				ePhotobooth.getElementsByTagName( "ul" )[ 0 ].classList.add("noFlip");
 			}
 
 			eVideo.play();

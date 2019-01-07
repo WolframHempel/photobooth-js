@@ -57,7 +57,7 @@
 	right: 0;
 	top: 0;
 	background: rgba( 0, 0, 0, 0.6 );
-	height: 220px;
+	height: 230px;
 	z-index: 2;
 	border-bottom-left-radius: 5px;
 	list-style: none;
@@ -82,8 +82,15 @@
 }
 
 .photobooth ul.noHSB{
-	height: 110px;
+	height: 120px;
 }
+.photobooth ul.noFlip{
+	height: 190px;
+}
+.photobooth ul.noHSB.noFlip{
+	height: 80px;
+}
+.photobooth ul.noFlip li.flip,
 .photobooth ul.noHSB li.hue,
 .photobooth ul.noHSB li.saturation,
 .photobooth ul.noHSB li.brightness{
