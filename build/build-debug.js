@@ -1,6 +1,4 @@
 fs = require( "fs" );
-var jsp = require("uglify-js").parser;
-var pro = require("uglify-js").uglify;
 
 var sJs = fs.readFileSync( "../js/Photobooth.js", "utf-8" );
 var pImports = sJs.match( /\/\/include (.*)/g );
@@ -12,13 +10,11 @@ for( var i = 0; i < pImports.length; i++ )
 	sJs = sJs.replace( pImports[ i ], sInclude );
 }
 
-
 /**
 * jQuery plugin code
 */
 console.log( "Adding jQuery integration");
 sjQuery = fs.readFileSync( "../js/jqueryIntegration.js", "utf-8" );
-
 
 var sOutput = "";
 sOutput += "/**\n";
@@ -39,7 +35,5 @@ sOutput += "* jQuery integration. (It's safe to delete this line if you're not u
 sOutput += "*/\n";
 sOutput += sjQuery;
 
-
 fs.writeFileSync( "../photobooth_min.js", sOutput, "utf-8" );
-
 console.log( "DONE" );
