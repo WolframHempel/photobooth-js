@@ -93,9 +93,8 @@ Photobooth = function( container )
 			}
 			else
 			{
-				oStream.getTracks().forEach(track => track.stop());
+				oStream.getTracks().forEach( track => track.stop() );
 			}
-
 		}
 	};
 
