@@ -1,0 +1,27 @@
+{
+  "name": "photobooth-js",
+  "description": "A html5 widget that allows users to take their avatar pictures on your site.",
+  "main": "photobooth_min.js",
+  "authors": [
+    "Wolfram Hempel"
+  ],
+  "license": "BSD",
+  "keywords": [
+    "camera",
+    "photo",
+    "html5-widget",
+    "jquery"
+  ],
+  "homepage": "https://github.com/rsd/photobooth-js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "build"
+  ],
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}

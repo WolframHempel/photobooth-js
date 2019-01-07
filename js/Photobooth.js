@@ -1,7 +1,6 @@
 Photobooth = function( container )
 {
-
-    var self = this;
+	var self = this;
 	/**
 	* Make it jQuery friendlier
 	*/
@@ -12,6 +11,7 @@ Photobooth = function( container )
 
 	var fGetUserMedia =
 	(
+		navigator.mediaDevices.getUserMedia ||
 		navigator.getUserMedia ||
 		navigator.webkitGetUserMedia ||
 		navigator.mozGetUserMedia ||
@@ -56,6 +56,26 @@ Photobooth = function( container )
 	{
 		if( fCheckValue( s, "saturation" ) ) saturationOffset = s;
 	};
+
+	this.setCrop = function()
+	{
+		oResizeHandle.toggle();
+		if( eCrop.className === "crop" )
+		{
+			eCrop.className = "crop selected";
+		}
+		else
+		{
+			eCrop.className = "crop";
+		}
+	};
+
+	this.crop = function(x,y,width,height)
+	{
+		oResizeHandle.cropMove(x,y);
+		oResizeHandle.cropResize(width,height);
+	};
+
 	/**
 	* Closes the videostream, cancels the canvas drawing loop
 	* and frees up the webcam. Use resume()
@@ -70,6 +90,10 @@ Photobooth = function( container )
 			if( oStream && oStream.stop )
 			{
 				oStream.stop();
+			}
+			else
+			{
+				oStream.getTracks().forEach( track => track.stop() );
 			}
 		}
 	};
@@ -108,8 +132,22 @@ Photobooth = function( container )
 	* of in FF and the video tag is displayed directly.
 	*
 	* To reeanble the Sliders set this property to true
+	*
+	* FIXME: when forceHSB is on, the video gets wrong aspect ratio
+	*        e.g. mobile camera on portrait position
 	*/
 	this.forceHSB = false;
+
+	/**
+	* Default image format, image/jpeg is also
+	* commonly supported
+	*/ 
+	this.mimeType = 'image/png';
+
+	/**
+	* image/jpeg quality, valid range is 0.0 to 1.0
+	*/
+	this.quality = 1;
 
 	/**
 	* True if the browser supports Webcam streams,
@@ -152,44 +190,49 @@ Photobooth = function( container )
 	};
 
 	this.capture = function () {
-	    /**
+	/**
         * Flash
         */
-	    eBlind.className = "blind";
-	    eBlind.style.opacity = 1;
-	    setTimeout(function () { eBlind.className = "blind anim"; eBlind.style.opacity = 0; }, 50);
+		eBlind.className = "blind";
+		eBlind.style.opacity = 1;
+		setTimeout(function () { eBlind.className = "blind anim"; eBlind.style.opacity = 0; }, 50);
 
-	    var mData = {};
-	    if (oResizeHandle.isActive()) {
-	        mData = oResizeHandle.getData();
-	    }
-	    else {
-	        if (bVideoOnly) {
-	            mData = {
-	                x: ((_width - eVideo.videoWidth) / 2),
-	                y: ((_height - eVideo.videoHeight) / 2),
-	                width: eVideo.videoWidth,
-	                height: eVideo.videoHeight
-	            };
-	        }
-	        else {
-	            mData = {
-	                x: 0,
-	                y: 0,
-	                width: _width,
-	                height: _height
-	            };
-	        }
+		var mData = {};
+		if (oResizeHandle.isActive())
+		{
+			mData = oResizeHandle.getData();
+		}
+		else
+		{
+			if (bVideoOnly)
+			{
+				mData = {
+					x: ((_width - eVideo.videoWidth) / 2),
+					y: ((_height - eVideo.videoHeight) / 2),
+					width: eVideo.videoWidth,
+					height: eVideo.videoHeight
+				};
+			}
+			else
+			{
+				mData = {
+					x: 0,
+					y: 0,
+					width: _width,
+					height: _height
+				};
+			}
 
-	    }
+		}
 
-	    var eTempCanvas = cE("canvas");
+		var eTempCanvas = cE("canvas");
 
-	    eTempCanvas.width = mData.width;
-	    eTempCanvas.height = mData.height;
+		eTempCanvas.width = mData.width;
+		eTempCanvas.height = mData.height;
 
-	    if (bVideoOnly) {
-	        eTempCanvas.getContext("2d").drawImage(
+		if (bVideoOnly)
+		{
+			eTempCanvas.getContext("2d").drawImage(
 				eVideo,
 				Math.max(0, mData.x - ((_width - eVideo.videoWidth) / 2)),
 				Math.max(mData.y - ((_height - eVideo.videoHeight) / 2)),
@@ -199,13 +242,14 @@ Photobooth = function( container )
 				0,
 				mData.width,
 				mData.height);
-	    }
-	    else {
-	        var oImageData = oOutput.getImageData(mData.x, mData.y, mData.width, mData.height);
-	        eTempCanvas.getContext("2d").putImageData(oImageData, 0, 0);
-	    }
+		}
+		else
+		{
+			var oImageData = oOutput.getImageData(mData.x, mData.y, mData.width, mData.height);
+			eTempCanvas.getContext("2d").putImageData(oImageData, 0, 0);
+		}
 
-	    scope.onImage(eTempCanvas.toDataURL());
+		scope.onImage(eTempCanvas.toDataURL(scope.mimeType,scope.quality));
 	};
 
 	/****************************
@@ -224,8 +268,8 @@ Photobooth = function( container )
 		bIsStopped = false,
 		oStream = null,
 		scope = this,
-		_width = container.offsetWidth,
-		_height = container.offsetHeight;
+		_width = container.offsetWidth === 0 ? $(container).width() : container.offsetWidth,
+		_height = container.offsetHeight === 0 ? $(container).height() :container.offsetHeight;
 
 	var fCheckValue = function( val, type )
 	{
@@ -254,7 +298,7 @@ Photobooth = function( container )
 
 	var ePhotobooth = cE( "div" );
 	ePhotobooth.className = "photobooth";
-	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry, Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
+	ePhotobooth.innerHTML = '<div class="blind"></div><canvas></canvas><div class="warning notSupported">Sorry, Photobooth.js is not supported by your browser</div><div class="warning noWebcam">Please give Photobooth permission to use your Webcam. <span>Try again</span></div><ul><li title="flip"class="flip"></li><li title="hue"class="hue"></li><li title="saturation"class="saturation"></li><li title="brightness"class="brightness"></li><li title="crop"class="crop"></li><li title="take picture"class="trigger"></li></ul>';
 
 	var eInput = cE( "canvas" );
 	var oInput = eInput.getContext( "2d" );
@@ -293,28 +337,24 @@ Photobooth = function( container )
 
 	c( "trigger" ).onclick = function()
 	{
-	    self.capture();
+		self.capture();
 	};
-	
+
+	var fFlipFront = false;
+	var eFlip = c( "flip" );
+	eFlip.onclick = function()
+	{
+		fFlipFront = ! fFlipFront;
+		self.pause();
+		self.resume();
+	};
 
 	var fOnStream = function( stream )
 	{
 		oStream = stream;
-
-		try{
-			/**
-			* Chrome
-			*/
-			eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( oStream );
-			fGetAnimFrame( fNextFrame );
-		}
-		catch( e )
+		if ( typeof eVideo.srcObject === "object" )
 		{
-			/**
-			* Firefox
-			*/
-			eVideo.mozSrcObject  =   oStream ;
-
+			eVideo.srcObject = oStream;
 			if( scope.forceHSB === false )
 			{
 				bVideoOnly = true;
@@ -328,6 +368,39 @@ Photobooth = function( container )
 
 			eVideo.play();
 		}
+		else
+		{
+			/**
+			 * Legacy support
+			 */
+			try{
+				/**
+				 * Chrome
+				 */
+				eVideo.src = ( window.URL || window.webkitURL ).createObjectURL( oStream );
+				fGetAnimFrame( fNextFrame );
+			}
+			catch( e )
+			{
+				/**
+				 * Firefox
+				 */
+				eVideo.mozSrcObject  =   oStream ;
+
+				if( scope.forceHSB === false )
+				{
+					bVideoOnly = true;
+					ePhotobooth.appendChild( eVideo );
+					ePhotobooth.getElementsByTagName( "ul" )[ 0 ].className = "noHSB";
+				}
+				else
+				{
+					eVideo.addEventListener( "canplay", function(){ fGetAnimFrame( fNextFrame ); }, false );
+				}
+
+				eVideo.play();
+			}
+		}
 	};
 
 	var fOnStreamError = function( e )
@@ -337,8 +410,18 @@ Photobooth = function( container )
 
 	var fRequestWebcamAccess = function()
 	{
+		/**
+		 * FIXME: test identification thru videoTracks
+		 * var videoTracks = stream.getVideoTracks();
+		 * console.log('Using video device: ' + videoTracks[0].label);
+		 */
+
+		var constraints = {"video" : { facingMode: (fFlipFront? "user" : "environment") } };
 		eNoWebcamWarning.style.display = "none";
-		fGetUserMedia.call( navigator, {"video" : true }, fOnStream, fOnStreamError );
+		if ( navigator.mediaDevices.getUserMedia )
+			navigator.mediaDevices.getUserMedia( constraints ).then( fOnStream ).catch( fOnStreamError );
+		else
+			fGetUserMedia.call( navigator, constraints, fOnStream, fOnStreamError );
 	};
 
 	var fHue2rgb = function (p, q, t)
