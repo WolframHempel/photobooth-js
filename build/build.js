@@ -18,7 +18,7 @@ for( var i = 0; i < pImports.length; i++ )
 */
 console.log( "Minifying JavaScript");
 sJs = uglify.minify( sJs );
-//console.log("sjs: " + sJs.error + ", " + sJs.code);
+
 /**
 * Css
 */
