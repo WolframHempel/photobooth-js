@@ -35,5 +35,5 @@ sOutput += "* jQuery integration. (It's safe to delete this line if you're not u
 sOutput += "*/\n";
 sOutput += sjQuery;
 
-fs.writeFileSync( "../photobooth_min.js", sOutput, "utf-8" );
+fs.writeFileSync( "../photobooth.js", sOutput, "utf-8" );
 console.log( "DONE" );
