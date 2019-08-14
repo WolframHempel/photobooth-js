@@ -2,7 +2,7 @@
 *
 * Photobooth.js version 0.7-rsd3
 *
-* build Wed Aug 14 2019 14:32:06 GMT-0300 (Brasilia Standard Time)
+* build Wed Aug 14 2019 16:44:12 GMT-0300 (Brasilia Standard Time)
 *
 * CSS
 */
@@ -12,6 +12,7 @@ window.addEventListener("load",function(){var s = document.createElement("style"
 */
 Photobooth = function( container )
 {
+	var self = this;
 	/**
 	* Make it jQuery friendlier
 	*/
@@ -585,7 +586,7 @@ Drag.prototype.fonmouseup = function( e )
 
 	c( "trigger" ).onclick = function()
 	{
-		this.capture();
+		self.capture();
 	};
 
 	var fFlipFront = false;
@@ -593,8 +594,8 @@ Drag.prototype.fonmouseup = function( e )
 	eFlip.onclick = function()
 	{
 		fFlipFront = ! fFlipFront;
-		this.pause();
-		this.resume();
+		self.pause();
+		self.resume();
 	};
 
 	var fOnStream = function( stream )
