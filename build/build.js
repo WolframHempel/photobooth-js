@@ -36,7 +36,7 @@ sjQuery = uglify.minify( sjQuery );
 var sOutput = "";
 sOutput += "/**\n";
 sOutput += "*\n";
-sOutput += "* Photobooth.js version 0.7-rsd2\n";
+sOutput += "* Photobooth.js version 0.7-rsd3\n";
 sOutput += "*\n";
 sOutput += "* build " + ( new Date() ).toString() + "\n" ;
 sOutput += "*\n";
@@ -52,7 +52,5 @@ sOutput += "* jQuery integration. (It's safe to delete this line if you're not u
 sOutput += "*/\n";
 sOutput += sjQuery.code;
 
-
 fs.writeFileSync( "../photobooth_min.js", sOutput, "utf-8" );
-
 console.log( "DONE" );

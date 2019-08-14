@@ -1,4 +1,5 @@
 fs = require( "fs" );
+var cleanCSS = require('clean-css');
 
 var sJs = fs.readFileSync( "../js/Photobooth.js", "utf-8" );
 var pImports = sJs.match( /\/\/include (.*)/g );
@@ -11,6 +12,12 @@ for( var i = 0; i < pImports.length; i++ )
 }
 
 /**
+ * Css
+ */
+console.log( "Minifying css" );
+sCss = cleanCSS.process( fs.readFileSync( "../css/Photobooth.css", "utf-8" ) );
+
+/**
 * jQuery plugin code
 */
 console.log( "Adding jQuery integration");
@@ -19,13 +26,22 @@ sjQuery = fs.readFileSync( "../js/jqueryIntegration.js", "utf-8" );
 var sOutput = "";
 sOutput += "/**\n";
 sOutput += "*\n";
-sOutput += "* Photobooth.js version 0.7-rsd2\n";
+sOutput += "* Photobooth.js version 0.7-rsd3\n";
 sOutput += "*\n";
 sOutput += "* build " + ( new Date() ).toString() + "\n" ;
 sOutput += "*\n";
 sOutput += "* CSS\n";
 sOutput += "*/\n";
-sOutput += 'window.addEventListener("load",function(){var s = document.createElement("link"); s.href="css/Photobooth.css"; s.type = "text/css"; s.rel = "stylesheet"; document.head.appendChild(s);},false);\n';
+
+// Because o CORB, embending the css here too: https://www.chromestatus.com/feature/5629709824032768
+/*
+sOutput += 'window.addEventListener("load",function(){var s = document.createElement("link"); ';
+sOutput += ' s.href="https://raw.githubusercontent.com/rsd/photobooth-js/master/css/Photobooth.css"; ';
+sOutput += 's.type = "text/css"; s.rel = "stylesheet"; document.head.appendChild(s);},false);\n';
+*/
+sOutput += 'window.addEventListener("load",function(){var s = document.createElement("style"); s.innerHTML="';
+sOutput += sCss + '"; document.head.appendChild(s);},false);\n';
+
 sOutput += "/**\n";
 sOutput += "* JS\n";
 sOutput += "*/\n";
