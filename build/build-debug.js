@@ -1,5 +1,4 @@
 fs = require( "fs" );
-var uglify = require("uglify-es");
 var cleanCSS = require('clean-css');
 
 var sJs = fs.readFileSync( "../js/Photobooth.js", "utf-8" );
@@ -13,15 +12,8 @@ for( var i = 0; i < pImports.length; i++ )
 }
 
 /**
-* Compress JavaScript
-* No idea what an ast is...works fine though :-)
-*/
-console.log( "Minifying JavaScript");
-sJs = uglify.minify( sJs );
-
-/**
-* Css
-*/
+ * Css
+ */
 console.log( "Minifying css" );
 sCss = cleanCSS.process( fs.readFileSync( "../css/Photobooth.css", "utf-8" ) );
 
@@ -30,8 +22,6 @@ sCss = cleanCSS.process( fs.readFileSync( "../css/Photobooth.css", "utf-8" ) );
 */
 console.log( "Adding jQuery integration");
 sjQuery = fs.readFileSync( "../js/jqueryIntegration.js", "utf-8" );
-sjQuery = uglify.minify( sjQuery );
-
 
 var sOutput = "";
 sOutput += "/**\n";
@@ -42,15 +32,24 @@ sOutput += "* build " + ( new Date() ).toString() + "\n" ;
 sOutput += "*\n";
 sOutput += "* CSS\n";
 sOutput += "*/\n";
-sOutput += 'window.addEventListener("load",function(){var s = document.createElement("style"); s.innerHTML="' + sCss + '"; document.head.appendChild(s);},false);\n';
+
+// Because o CORB, embending the css here too: https://www.chromestatus.com/feature/5629709824032768
+/*
+sOutput += 'window.addEventListener("load",function(){var s = document.createElement("link"); ';
+sOutput += ' s.href="https://raw.githubusercontent.com/rsd/photobooth-js/master/css/Photobooth.css"; ';
+sOutput += 's.type = "text/css"; s.rel = "stylesheet"; document.head.appendChild(s);},false);\n';
+*/
+sOutput += 'window.addEventListener("load",function(){var s = document.createElement("style"); s.innerHTML="';
+sOutput += sCss + '"; document.head.appendChild(s);},false);\n';
+
 sOutput += "/**\n";
 sOutput += "* JS\n";
 sOutput += "*/\n";
-sOutput += sJs.code;
+sOutput += sJs;
 sOutput += "\n/**\n";
 sOutput += "* jQuery integration. (It's safe to delete this line if you're not using jQuery)\n";
 sOutput += "*/\n";
-sOutput += sjQuery.code;
+sOutput += sjQuery;
 
-fs.writeFileSync( "../photobooth_min.js", sOutput, "utf-8" );
+fs.writeFileSync( "../photobooth.js", sOutput, "utf-8" );
 console.log( "DONE" );

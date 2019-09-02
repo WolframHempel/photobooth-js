@@ -1,0 +1,13 @@
+{
+  "name": "photobooth-js",
+  "version": "0.7-rsd3",
+  "description": "A html5 widget that allows users to take their avatar pictures on your site.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rsd/photobooth-js"
+  },
+  "author": "Wolfram Hempel",
+  "license": "BSD",
+  "bugs": "https://github.com/rsd/photobooth-js/issues",
+  "homepage": "https://wolframhempel.github.com/photobooth-js/"
+}
