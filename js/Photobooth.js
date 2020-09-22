@@ -107,7 +107,7 @@ Photobooth = function( container )
 	* Hue / saturation / Brightness sliders are turned
 	* of in FF and the video tag is displayed directly.
 	*
-	* To reeanble the Sliders set this property to true
+	* To re-enable the Sliders set this property to true
 	*/
 	this.forceHSB = false;
 
